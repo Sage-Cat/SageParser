@@ -1,7 +1,7 @@
 @startuml
 
 package ui {
-    class DocsParser
+    class SageDocs
     {
         +init()
     }
@@ -14,12 +14,12 @@ package lib {
     }
 
     package parser {
-        class DataParserFactory
+        class DataProcessorFactory
         {
-            createDataParser(docType) : IDataParser
+            createDataProcessor(docType) : IDataProcessor
         }
 
-        class IDataParser {
+        class IDataProcessor {
             +parse(RawData) : Dataset
         }
 
@@ -35,14 +35,14 @@ package lib {
         N1 .. SimpleTableParser
         N1 .. BesuglayaInvoiceParser
 
-        SimpleTableParser -up-|> IDataParser
-        BesuglayaInvoiceParser -up-|> IDataParser
+        SimpleTableParser -up-|> IDataProcessor
+        BesuglayaInvoiceParser -up-|> IDataProcessor
     }
 
     package writer {
 
         class WriterFactory {
-            createWriter(fileType) : IWriter
+            createWriter(ReaderFileType) : IWriter
         } 
 
         interface IWriter {
@@ -67,7 +67,7 @@ package lib {
 
     package reader {
         class ReaderFactory {
-            createReader(fileType) : IReader
+            createReader(ReaderFileType) : IReader
         } 
 
         interface IReader {
@@ -90,17 +90,17 @@ package lib {
         XlsxReader -up-|> IReader
     }
 
-    Dataset -- IDataParser
+    Dataset -- IDataProcessor
 }
 
 
 ReaderFactory --> IReader
 WriterFactory --> IWriter
-DataParserFactory --> IDataParser
+DataProcessorFactory --> IDataProcessor
 
-DocsParser --> DataParserFactory
-DocsParser --> WriterFactory
-DocsParser --> ReaderFactory
-DocsParser --> Dataset
+SageDocs --> DataProcessorFactory
+SageDocs --> WriterFactory
+SageDocs --> ReaderFactory
+SageDocs --> Dataset
 
 @enduml

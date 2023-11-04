@@ -1,13 +1,13 @@
 #include <QApplication>
 
-#include "DocsParserUi.hpp"
+#include "SageDocsUi.hpp"
 
 int main(int argc, char const *argv[])
 {
     QApplication app(argc, argv);
 
-    DocsParserUi docsParserUi;
-    docsParserUi.init();
+    SageDocsUi SageDocsUi;
+    SageDocsUi.init();
 
     return app.exec();
 }

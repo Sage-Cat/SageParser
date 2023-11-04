@@ -1,6 +1,6 @@
 #pragma once
 
-class DocsParserUi
+class SageDocsUi
 {
 public:
     void init();

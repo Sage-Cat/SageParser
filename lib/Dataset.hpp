@@ -3,11 +3,15 @@
 #include <string>
 #include <vector>
 
-namespace DocsParser
+namespace SageDocs
 {
+    using RawData = std::string;
+
     struct Dataset
     {
+        using Row = std::vector<std::string>;
+
         std::vector<std::string> columnNames;
-        std::vector<std::vector<std::string>> dataRows; // Assuming Rows is a vector of strings
+        std::vector<Row> dataRows;
     };
 }

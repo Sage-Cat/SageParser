@@ -1,4 +1,4 @@
-project(DocsParserUi)
+project(SageDocsUi)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -12,13 +12,13 @@ find_package(Qt6Quick REQUIRED)
 find_package(Qt6 COMPONENTS QuickControls2 REQUIRED)
 
 # Create client executable
-add_executable(DocsParserUi ${ALL_CLIENT_SOURCES} ${RESOURCE_FILES})
+add_executable(SageDocsUi ${ALL_CLIENT_SOURCES} ${RESOURCE_FILES})
 
 # Include directories
-target_include_directories(DocsParserUi PUBLIC ${CORE_SOURCES_DIR})
+target_include_directories(SageDocsUi PUBLIC ${CORE_SOURCES_DIR})
 
 # Link libraries 
-target_link_libraries(DocsParserUi Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::QuickControls2 DocsParserLib::DocsParserLib)
+target_link_libraries(SageDocsUi Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::QuickControls2 SageDocsLib::SageDocsLib)
 
 # Set the destination directory for the executable
-set_target_properties(DocsParserUi PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CLIENT_BUILD_DIR}/bin)
+set_target_properties(SageDocsUi PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CLIENT_BUILD_DIR}/bin)

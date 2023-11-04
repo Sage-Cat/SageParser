@@ -2,7 +2,7 @@ from conan import ConanFile
 from conan.tools.files import copy
 
 
-class DocsParserPkg(ConanFile):
+class SageDocsPkg(ConanFile):
     name = "docs_parser"
     version = "1.0.0"
     generators = "CMakeDeps", "CMakeToolchain", "VirtualRunEnv"
