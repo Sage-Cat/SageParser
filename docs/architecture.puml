@@ -1,0 +1,106 @@
+@startuml
+
+package ui {
+    class DocsParser
+    {
+        +init()
+    }
+}
+
+package lib {
+    class Dataset {
+        -columnNames : vector<string>
+        -dataRows : vector<Rows>
+    }
+
+    package parser {
+        class DataParserFactory
+        {
+            createDataParser(docType) : IDataParser
+        }
+
+        class IDataParser {
+            +parse(RawData) : Dataset
+        }
+
+        class SimpleTableParser {
+            +parse(RawData) : Dataset
+        }
+
+        class BesuglayaInvoiceParser {
+            +parse(RawData) : Dataset
+        }
+
+        note "Many other parsers not shown here" as N1
+        N1 .. SimpleTableParser
+        N1 .. BesuglayaInvoiceParser
+
+        SimpleTableParser -up-|> IDataParser
+        BesuglayaInvoiceParser -up-|> IDataParser
+    }
+
+    package writer {
+
+        class WriterFactory {
+            createWriter(fileType) : IWriter
+        } 
+
+        interface IWriter {
+            +writeData(Dataset)
+        }
+
+        class CsvWriter {
+            +writeData(Dataset)
+        }
+
+        class XmlWriter {
+            +writeData(Dataset)
+        }
+
+        note "Many other writers not shown here" as N2
+        N2 .. CsvWriter
+        N2 .. XmlWriter
+
+        CsvWriter -up-|> IWriter
+        XmlWriter -up-|> IWriter
+    }
+
+    package reader {
+        class ReaderFactory {
+            createReader(fileType) : IReader
+        } 
+
+        interface IReader {
+            +readData(): RawData
+        }
+
+        class CsvReader {
+            +readData(): RawData
+        }
+
+        class XlsxReader {
+            +readData(): RawData
+        }
+
+        note "Many other readers not shown here" as N3
+        N3 .. CsvReader
+        N3 .. XlsxReader
+
+        CsvReader -up-|> IReader
+        XlsxReader -up-|> IReader
+    }
+
+    Dataset -- IDataParser
+}
+
+
+ReaderFactory --> IReader
+WriterFactory --> IWriter
+DataParserFactory --> IDataParser
+
+DocsParser --> DataParserFactory
+DocsParser --> WriterFactory
+DocsParser --> ReaderFactory
+DocsParser --> Dataset
+
+@enduml
