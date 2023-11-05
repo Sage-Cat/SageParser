@@ -13,6 +13,7 @@ namespace SageDocs
     class IReader
     {
     public:
-        virtual RawData readData() = 0;
+        virtual void setFileName(const std::string &name) = 0;
+        virtual std::shared_ptr<Dataset> readData() = 0;
     };
 }

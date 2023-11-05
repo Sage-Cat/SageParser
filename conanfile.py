@@ -3,7 +3,7 @@ from conan.tools.files import copy
 
 
 class SageDocsPkg(ConanFile):
-    name = "docs_parser"
+    name = "docs_processr"
     version = "1.0.0"
     generators = "CMakeDeps", "CMakeToolchain", "VirtualBuildEnv", "VirtualRunEnv"
 

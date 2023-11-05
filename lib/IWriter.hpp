@@ -13,6 +13,7 @@ namespace SageDocs
     class IWriter
     {
     public:
-        virtual void writeData(const Dataset &dataset) = 0;
+        virtual void setFileName(const std::string &name) = 0;
+        virtual void writeData(std::shared_ptr<Dataset> dataset) = 0;
     };
 }

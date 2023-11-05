@@ -7,12 +7,15 @@ namespace SageDocs
     enum class DocType : int
     {
         SIMPLE_TABLE = 0,
-        BESUGLAYA_INVOICE
+        BESUGLAYA_INVOICE,
+        OMEGA_INVOICE,
+        OMEGA_PRICELIST,
+        ODOO_PRODUCTS
     };
 
     class IDataProcessor
     {
     public:
-        virtual Dataset parse(const RawData data) = 0;
+        virtual std::shared_ptr<Dataset> process(std::shared_ptr<Dataset> dataset) = 0;
     };
 }

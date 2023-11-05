@@ -2,11 +2,10 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace SageDocs
 {
-    using RawData = std::string;
-
     struct Dataset
     {
         using Row = std::vector<std::string>;

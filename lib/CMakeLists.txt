@@ -9,7 +9,7 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
     ${LIB_SOURCES_DIR}/ReaderFactory.cpp
     ${LIB_SOURCES_DIR}/WriterFactory.cpp
-    ${LIB_SOURCES_DIR}/DataProcessors/SimpleDataProcessor.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/SimpleTableProcessor.cpp
 )
 
 add_library(SageDocsLib ${LIB_SOURCES})
