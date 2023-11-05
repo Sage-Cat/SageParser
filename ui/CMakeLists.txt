@@ -24,6 +24,3 @@ target_include_directories(SageDocsUi PUBLIC ${UI_SOURCES_DIR} ${LIB_SOURCES_DIR
 
 # Link libraries 
 target_link_libraries(SageDocsUi SageDocsLib Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::QuickControls2)
-
-# Set the destination directory for the executable
-set_target_properties(SageDocsUi PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CLIENT_BUILD_DIR}/bin)

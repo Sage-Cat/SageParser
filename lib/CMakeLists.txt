@@ -6,9 +6,10 @@ find_package(pugixml REQUIRED)
 find_package(xlnt REQUIRED)
 
 set(LIB_SOURCES
-    ${LIB_SOURCES_DIR}/parser/DataProcessorFactory.cpp
-    ${LIB_SOURCES_DIR}/reader/ReaderFactory.cpp
-    ${LIB_SOURCES_DIR}/writer/WriterFactory.cpp
+    ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
+    ${LIB_SOURCES_DIR}/ReaderFactory.cpp
+    ${LIB_SOURCES_DIR}/WriterFactory.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/SimpleDataProcessor.cpp
 )
 
 add_library(SageDocsLib ${LIB_SOURCES})
