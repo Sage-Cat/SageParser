@@ -5,7 +5,7 @@ from conan.tools.files import copy
 class SageDocsPkg(ConanFile):
     name = "docs_parser"
     version = "1.0.0"
-    generators = "CMakeDeps", "CMakeToolchain", "VirtualRunEnv"
+    generators = "CMakeDeps", "CMakeToolchain", "VirtualBuildEnv", "VirtualRunEnv"
 
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
@@ -15,7 +15,3 @@ class SageDocsPkg(ConanFile):
         self.requires("csvmonkey/[0.0.5]")
         self.requires("pugixml/[1.14]")
         self.requires("xlnt/[1.5.0]")
-
-    def layout(self):
-        self.folders.source = "."
-        self.folders.build = "build"

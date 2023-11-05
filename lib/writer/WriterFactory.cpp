@@ -2,7 +2,7 @@
 
 namespace SageDocs
 {
-    std::unique_ptr<IWriter> WriterFactory::createWriter(FileType type)
+    std::unique_ptr<IWriter> WriterFactory::createWriter(WriterFileType type)
     {
         switch (type)
         {

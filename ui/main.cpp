@@ -2,7 +2,7 @@
 
 #include "SageDocsUi.hpp"
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 

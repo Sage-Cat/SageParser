@@ -4,9 +4,8 @@
 
 namespace SageDocs
 {
-    enum class ReaderReaderFileType : int
+    enum class ReaderFileType : int
     {
-        // uncomment when ready
         CSV = 0,
         XLSX
     };
