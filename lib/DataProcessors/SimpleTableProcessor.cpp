@@ -19,6 +19,7 @@ namespace SageDocs
 
             // unit
             {"UNIT", DefaultColumnNames::UNIT},
+            {"Unit", DefaultColumnNames::UNIT},
             {"uom_id", DefaultColumnNames::UNIT},
 
             // price
@@ -29,6 +30,11 @@ namespace SageDocs
 
         // UNIT
         m_unitAliases = {
+            // шт
+            {"шт", "шт."},
+            {"штук", "шт."},
+            {"Шт", "шт."},
+
             // бхт
             {"бухт", "бхт."},
 

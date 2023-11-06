@@ -25,14 +25,14 @@ TEST(SageDocsLibTest, MinimalCsvWorkCycle)
     std::shared_ptr<SageDocs::Dataset> inputDataset;
     EXPECT_NO_THROW(inputDataset = reader->readData());
     EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"NAMEUKR", "Count", "Unit", "CENA"}));
-    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт", "123.10"})); // Assuming the decimal separator is '.'
+    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт", "123,10"})); // Assuming the decimal separator is '.'
 
     // 2. Process data
     auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::SIMPLE_TABLE);
     std::shared_ptr<SageDocs::Dataset> outputDataset;
     EXPECT_NO_THROW(outputDataset = processor->process(inputDataset));
     EXPECT_EQ(outputDataset->columnNames, std::vector<std::string>({"name", "count", "unit", "price"}));
-    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт.", "123.10"}));
+    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт.", "123,10"}));
 
     // 3. Write data
     auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::CSV);
