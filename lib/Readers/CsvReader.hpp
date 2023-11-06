@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "IReader.hpp"
 
 namespace SageDocs
@@ -9,10 +11,15 @@ namespace SageDocs
     public:
         CsvReader() = default;
 
-        void setFileName(const std::string &name) override;
+        // Interface methods
+        void setFilePath(const std::filesystem::path &new_path) override;
         std::shared_ptr<Dataset> readData() override;
 
+        // Public methods
+        void setDelimiter(char new_delimiter);
+
     protected:
-        std::string m_fileName{};
+        std::filesystem::path m_filePath{};
+        char m_delimiter{','};
     };
 }

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "IReader.hpp"
 
 namespace SageDocs

@@ -9,6 +9,6 @@ namespace SageDocs
     public:
         explicit BesuglayaInvoiceProcessor() = default;
 
-        std::shared_ptr<Dataset> process(std::shared_ptr<Dataset> dataset) override;
+        std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) override;
     };
 }

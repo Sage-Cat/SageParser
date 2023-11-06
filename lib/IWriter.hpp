@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <filesystem>
+
 #include "Dataset.hpp"
 
 namespace SageDocs
@@ -13,7 +16,7 @@ namespace SageDocs
     class IWriter
     {
     public:
-        virtual void setFileName(const std::string &name) = 0;
-        virtual void writeData(std::shared_ptr<Dataset> dataset) = 0;
+        virtual void setFilePath(const std::filesystem::path &new_path) = 0;
+        virtual void writeData(const std::shared_ptr<Dataset> &dataset) = 0;
     };
 }

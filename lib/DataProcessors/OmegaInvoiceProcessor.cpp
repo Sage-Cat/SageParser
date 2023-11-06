@@ -2,9 +2,9 @@
 
 namespace SageDocs
 {
-    std::shared_ptr<Dataset> OmegaInvoiceProcessor::process(std::shared_ptr<Dataset> dataset)
+    std::shared_ptr<Dataset> OmegaInvoiceProcessor::process(const std::shared_ptr<Dataset> &dataset)
     {
         // TODO: implementation
-        return process(dataset);
+        return SimpleTableProcessor::process(dataset);
     }
 }

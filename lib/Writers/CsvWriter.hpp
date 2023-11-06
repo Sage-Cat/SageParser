@@ -9,10 +9,11 @@ namespace SageDocs
     public:
         CsvWriter() = default;
 
-        void setFileName(const std::string &name) override;
-        void writeData(std::shared_ptr<Dataset> dataset) override;
+        void setFilePath(const std::filesystem::path &new_path) override;
+
+        void writeData(const std::shared_ptr<Dataset> &dataset) override;
 
     protected:
-        std::string m_fileName{};
+        std::filesystem::path m_filePath;
     };
 }

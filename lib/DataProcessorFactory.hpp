@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "IDataProcessor.hpp"
 
 namespace SageDocs

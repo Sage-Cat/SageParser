@@ -51,17 +51,17 @@ package lib {
         } 
 
         interface IWriter {
-            +setFileName(name)
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
         class CsvWriter {
-            +setFileName(name)
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
         class XmlWriter {
-            +setFileName(name)
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
@@ -79,17 +79,17 @@ package lib {
         } 
 
         interface IReader {
-            +setFileName(name)
+            +setFilePath(new_path)
             +readData(): std::shared_ptr<Dataset>
         }
 
         class CsvReader {
-            +setFileName(name)
+            +setFilePath(new_path)
             +readData(): std::shared_ptr<Dataset>
         }
 
         class XlsxReader {
-            +setFileName(name)
+            +setFilePath(new_path)
             +readData(): std::shared_ptr<Dataset>
         }
 

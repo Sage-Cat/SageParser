@@ -2,6 +2,8 @@
 
 #include "Dataset.hpp"
 
+#include <memory>
+
 namespace SageDocs
 {
     enum class DocType : int
@@ -16,6 +18,6 @@ namespace SageDocs
     class IDataProcessor
     {
     public:
-        virtual std::shared_ptr<Dataset> process(std::shared_ptr<Dataset> dataset) = 0;
+        virtual std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) = 0;
     };
 }
