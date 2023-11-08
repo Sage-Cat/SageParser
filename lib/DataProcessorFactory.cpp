@@ -1,6 +1,6 @@
 #include "DataProcessorFactory.hpp"
+#include "DataProcessors\SimpleTableProcessor.hpp"
 
-#include "DataProcessors/SimpleDataProcessor.hpp"
 
 namespace SageDocs
 {
@@ -9,8 +9,7 @@ namespace SageDocs
         switch (type)
         {
         case DocType::SIMPLE_TABLE:
-            std::make_unique<SimpleDataProcessor>();
-            break;
+            return std::make_unique<SimpleTableProcessor>();
         // case DocType::BESUGLAYA_INVOICE:
         default:
             throw std::invalid_argument("Unknown DocType provided");

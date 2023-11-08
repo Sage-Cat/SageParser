@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <filesystem>
+
 #include "Dataset.hpp"
 
 namespace SageDocs
@@ -13,6 +16,7 @@ namespace SageDocs
     class IReader
     {
     public:
-        virtual RawData readData() = 0;
+        virtual void setFilePath(const std::filesystem::path &new_path) = 0;
+        virtual std::shared_ptr<Dataset> readData() = 0;
     };
 }

@@ -13,47 +13,55 @@ package lib {
         -dataRows : vector<Rows>
     }
 
-    package parser {
+    package Processors {
         class DataProcessorFactory
         {
             createDataProcessor(docType) : IDataProcessor
         }
 
         class IDataProcessor {
-            +parse(RawData) : Dataset
+            +process(std::shared_ptr<Dataset>) : Dataset
         }
 
-        class SimpleTableParser {
-            +parse(RawData) : Dataset
+        class SimpleTableProcessor {
+            +process(std::shared_ptr<Dataset>) : Dataset
         }
 
-        class BesuglayaInvoiceParser {
-            +parse(RawData) : Dataset
+        class OmegaInvoiceProcessor {
+            +process(std::shared_ptr<Dataset>) : Dataset
         }
 
-        note "Many other parsers not shown here" as N1
-        N1 .. SimpleTableParser
-        N1 .. BesuglayaInvoiceParser
+        class BesuglayaInvoiceProcessor {
+            +process(std::shared_ptr<Dataset>) : Dataset
+        }
 
-        SimpleTableParser -up-|> IDataProcessor
-        BesuglayaInvoiceParser -up-|> IDataProcessor
+        note "Many other processors are not shown here" as N1
+        N1 .. BesuglayaInvoiceProcessor
+        N1 .. OmegaInvoiceProcessor
+
+        SimpleTableProcessor -up-|> IDataProcessor
+        BesuglayaInvoiceProcessor -up-|> SimpleTableProcessor
+        OmegaInvoiceProcessor -up-|> SimpleTableProcessor
     }
 
-    package writer {
+    package Writers {
 
         class WriterFactory {
             createWriter(ReaderFileType) : IWriter
         } 
 
         interface IWriter {
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
         class CsvWriter {
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
         class XmlWriter {
+            +setFilePath(new_path)
             +writeData(Dataset)
         }
 
@@ -65,21 +73,24 @@ package lib {
         XmlWriter -up-|> IWriter
     }
 
-    package reader {
+    package Readers {
         class ReaderFactory {
             createReader(ReaderFileType) : IReader
         } 
 
         interface IReader {
-            +readData(): RawData
+            +setFilePath(new_path)
+            +readData(): std::shared_ptr<Dataset>
         }
 
         class CsvReader {
-            +readData(): RawData
+            +setFilePath(new_path)
+            +readData(): std::shared_ptr<Dataset>
         }
 
         class XlsxReader {
-            +readData(): RawData
+            +setFilePath(new_path)
+            +readData(): std::shared_ptr<Dataset>
         }
 
         note "Many other readers not shown here" as N3
