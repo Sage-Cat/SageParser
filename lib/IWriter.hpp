@@ -1,18 +1,12 @@
 #pragma once
 
-#include <memory>
 #include <filesystem>
 
 #include "Dataset.hpp"
+#include "Types.hpp"
 
 namespace SageDocs
 {
-    enum class WriterFileType : int
-    {
-        CSV = 0,
-        XML
-    };
-
     class IWriter
     {
     public:

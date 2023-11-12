@@ -8,6 +8,7 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
     ${LIB_SOURCES_DIR}/ReaderFactory.cpp
     ${LIB_SOURCES_DIR}/WriterFactory.cpp
+    ${LIB_SOURCES_DIR}/Dataset.cpp
 
     ${LIB_SOURCES_DIR}/DataProcessors/SimpleTableProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp

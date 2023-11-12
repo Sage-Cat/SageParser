@@ -13,7 +13,7 @@ namespace SageDocs
 
         void writeData(const std::shared_ptr<Dataset> &dataset) override;
 
-    protected:
+    private:
         std::filesystem::path m_filePath;
     };
 }
