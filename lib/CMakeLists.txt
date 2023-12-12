@@ -2,7 +2,6 @@ project(SageDocsLib)
 
 # third party
 find_package(rapidcsv REQUIRED)
-find_package(ICU REQUIRED)
 find_package(pugixml REQUIRED)
 find_package(xlnt REQUIRED)
 
@@ -17,12 +16,14 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessors/OmegaInvoiceProcessor.cpp
 
     ${LIB_SOURCES_DIR}/Readers/CsvReader.cpp
+    ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp
 
     ${LIB_SOURCES_DIR}/Writers/CsvWriter.cpp
+    ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
 )
 
 add_library(SageDocsLib ${LIB_SOURCES})
 
 target_include_directories(SageDocsLib PUBLIC ${LIB_SOURCES_DIR})
 
-target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv icu::icu pugixml::pugixml xlnt::xlnt)
+target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml xlnt::xlnt)
