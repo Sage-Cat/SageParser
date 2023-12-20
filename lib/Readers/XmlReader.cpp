@@ -25,7 +25,8 @@ namespace SageDocs
         {
             throw result.description();
         }
-        pugi::xml_node items = doc.child("Root");
+        // pugi::xml_node items = doc.child("Root");
+        pugi::xml_node items = doc.first_child();
         auto dataset = std::make_shared<Dataset>();
         for (auto parent = items; parent != PUGIXML_NULL; parent = parent.next_sibling())
         {

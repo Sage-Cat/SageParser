@@ -37,14 +37,19 @@ namespace SageDocs
             pugi::xml_node price = root.append_child("Price");
             for (auto node_text : data)
             {
-                auto node_name = q.front();
-                q.pop();
-                pugi::xml_node child1 = price.append_child(node_name.c_str());
-                const char *text = node_text.c_str();
-                child1.text().set(text);
+                if (!q.empty())
+                {
+                    auto node_name = q.front();
+                    q.pop();
+                    pugi::xml_node child1 = price.append_child(node_name.c_str());
+                    const char *text = j.c_str();
+                    child1.text().set(text);
+                }
+                else
+                    throw std::runtime_error("queue is empty");
             }
         }
-        // Сохраняем XML-документ в файл
         doc.save_file("result.xml");
     }
+
 }

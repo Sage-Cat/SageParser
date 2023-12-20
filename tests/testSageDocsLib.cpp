@@ -63,7 +63,7 @@ TEST(SageDocsLibTest, MinimalXmlWorkCycle)
     EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт.", "123,10"}));
 
     // 3. Write data
-    auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::CSV);
+    auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::XML);
     writer->setFilePath(".\\output_testMinimalXMLWorkCycle.xml");
     EXPECT_NO_THROW(writer->writeData(outputDataset));
 }
