@@ -18,13 +18,15 @@ namespace SageDocs
     std::shared_ptr<Dataset> XmlReader::readData()
     {
         pugi::xml_document doc;
-        pugi::xml_parse_result result = doc.load_file(m_filePath);
-        // std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10FFFF, std::generate_header>()));
+        std::filesystem::path filePath = m_filePath;
+        std::string filePathStr = filePath.string();
+        pugi::xml_parse_result result = doc.load_file(filePathStr.c_str());
         if (!result)
         {
             throw result.description();
         }
-        pugi::xml_node items = doc.child("Root");
+        // pugi::xml_node items = doc.child("Root");
+        pugi::xml_node items = doc.first_child();
         auto dataset = std::make_shared<Dataset>();
         for (auto parent = items; parent != PUGIXML_NULL; parent = parent.next_sibling())
         {
@@ -47,7 +49,7 @@ namespace SageDocs
                 }
                 dataset->dataRows.push_back(tmp);
             }
-            return dataset;
         }
+        return dataset;
     }
 }

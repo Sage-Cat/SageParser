@@ -10,7 +10,8 @@ namespace SageDocs
     enum class ReaderFileType : int
     {
         CSV = 0,
-        XLSX
+        XLSX,
+        XML
     };
 
     class IReader
