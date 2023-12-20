@@ -3,6 +3,7 @@ project(SageDocsLib)
 # third party
 find_package(rapidcsv REQUIRED)
 find_package(pugixml REQUIRED)
+find_package(xlnt REQUIRED)
 
 set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
@@ -25,4 +26,5 @@ set(LIB_SOURCES
 add_library(SageDocsLib ${LIB_SOURCES})
 
 target_include_directories(SageDocsLib PUBLIC ${LIB_SOURCES_DIR})
-target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml)
+
+target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml xlnt::xlnt)
