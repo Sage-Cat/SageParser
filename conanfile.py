@@ -15,5 +15,4 @@ class SageDocsPkg(ConanFile):
         self.requires("rapidcsv/[8.80]")
         self.requires("csvmonkey/[0.0.5]")
         self.requires("pugixml/[1.14]")
-        self.requires("xlnt/[1.5.0]")
         self.requires("gtest/[1.14.0]")
