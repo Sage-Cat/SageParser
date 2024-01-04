@@ -1,6 +1,5 @@
 #include "DataProcessorFactory.hpp"
-#include "DataProcessors\SimpleTableProcessor.hpp"
-
+#include "DataProcessors/SimpleTableProcessor.hpp"
 
 namespace SageDocs
 {

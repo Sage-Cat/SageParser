@@ -9,6 +9,11 @@
 #include "WriterFactory.hpp"
 #include "Writers/CsvWriter.hpp"
 
+std::string getResourcePath(const std::string &relativePath)
+{
+    return std::string(TEST_RESOURCES_DIR) + "/" + relativePath;
+}
+
 TEST(DataProcessorFactoryTest, ProperObjectIsCreated)
 {
     auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::SIMPLE_TABLE);
@@ -20,7 +25,7 @@ TEST(SageDocsLibTest, MinimalCsvWorkCycle)
 {
     // 1. Read data from file
     auto reader = SageDocs::ReaderFactory::createReader(SageDocs::ReaderFileType::CSV);
-    reader->setFilePath("C:\\Users\\sagec\\Desktop\\git_projects\\SageDocs\\tests\\resources\\input_testMinimalCsvWorkCycle.csv");
+    reader->setFilePath(getResourcePath("input_testMinimalCsvWorkCycle.csv"));
     dynamic_cast<SageDocs::CsvReader *>(reader.get())->setDelimiter('|');
     std::shared_ptr<SageDocs::Dataset> inputDataset;
     EXPECT_NO_THROW(inputDataset = reader->readData());
@@ -36,7 +41,7 @@ TEST(SageDocsLibTest, MinimalCsvWorkCycle)
 
     // 3. Write data
     auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::CSV);
-    writer->setFilePath(".\\output_testMinimalCsvWorkCycle.csv");
+    writer->setFilePath(getResourcePath("output_testMinimalCsvWorkCycle.csv"));
     EXPECT_NO_THROW(writer->writeData(outputDataset));
 }
 
