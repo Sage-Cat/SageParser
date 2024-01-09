@@ -13,12 +13,10 @@ namespace SageDocs
 
         // Interface methods
         void setFilePath(const std::filesystem::path &new_path) override;
+        void setDelimiter(char new_delimiter) override;
         std::shared_ptr<Dataset> readData() override;
 
-        // Public methods
-        void setDelimiter(char new_delimiter);
-
-    protected:
+    private:
         std::filesystem::path m_filePath{};
         char m_delimiter{','};
     };

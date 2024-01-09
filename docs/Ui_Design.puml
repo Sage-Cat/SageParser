@@ -1,0 +1,69 @@
+@startuml
+
+package SageDocsUI {
+
+    class MainWindow {
+        - m_taskSelectionWidget : TaskSelectionWidget
+        - dynamicInputForm : DynamicInputForm
+        - progressDialog : ProgressDialog
+        - taskManager : TaskManager
+        + setupUI()
+        + bindSignalsAndSlots()
+    }
+
+    class TaskSelectionWidget {
+        - comboBox : QComboBox
+        + onSelectTask()
+    }
+
+    class DynamicInputForm {
+        - inputWidgets : QMap<QString, QWidget>
+        + updateInputFields(QString taskType)
+        + getInputData() : QVariantMap
+    }
+
+    class ProgressDialog {
+        - progressBar : QProgressBar
+        + showProgress()
+        + setMaximum(int value)
+        + setValue(int value)
+    }
+
+    class TaskManager {
+        + processSingleFileTask(QString taskType, QString filePath)
+        + processDualFileTask(QString taskType, QString filePath1, QString filePath2, size_t columnIndex)
+        + updateProgress(int value)
+    }
+}
+
+package SageDocsLib {
+
+    interface IReader {
+        + setFilePath(filesystem::path) : void
+        + setDelimiter(char) : void
+        + readData() : shared_ptr<Dataset>
+    }
+
+    interface IWriter {
+        + setFilePath(filesystem::path) : void
+        + writeData(shared_ptr<Dataset>) : void
+    }
+
+    interface IDataProcessor {
+        + process(shared_ptr<Dataset>) : shared_ptr<Dataset>
+    }
+
+}
+
+MainWindow --> TaskSelectionWidget : contains
+MainWindow --> DynamicInputForm : contains
+MainWindow --> ProgressDialog : contains
+MainWindow --> TaskManager : uses
+
+TaskSelectionWidget ..> TaskManager : triggers processing
+DynamicInputForm ..> TaskManager : provides file paths and parameters
+ProgressDialog <-- TaskManager : updates
+
+TaskManager ..> SageDocsLib : uses
+
+@enduml

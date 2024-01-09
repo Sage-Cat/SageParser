@@ -8,12 +8,20 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6Core REQUIRED)
 find_package(Qt6Widgets REQUIRED)
 find_package(Qt6Gui REQUIRED)
-find_package(Qt6Quick REQUIRED)
-find_package(Qt6 COMPONENTS QuickControls2 REQUIRED)
 
 set(UI_SOURCES 
     ${UI_SOURCES_DIR}/main.cpp
-    ${UI_SOURCES_DIR}/SageDocsUi.cpp
+    ${UI_SOURCES_DIR}/MainWindow.cpp
+    ${UI_SOURCES_DIR}/TaskSelectionWidget.cpp
+    ${UI_SOURCES_DIR}/DynamicInputForm.cpp
+    ${UI_SOURCES_DIR}/ProgressDialog.cpp
+    ${UI_SOURCES_DIR}/TaskSelectionWidget.cpp
+    ${UI_SOURCES_DIR}/TaskManager.cpp
+    ${UI_SOURCES_DIR}/TaskWorker.cpp
+
+    # Forms
+    ${UI_SOURCES_DIR}/Forms/TaskForm.hpp
+    ${UI_SOURCES_DIR}/Forms/OdooProductsForm.cpp
 )
 
 # Create client executable
@@ -23,4 +31,4 @@ add_executable(SageDocsUi ${UI_SOURCES})
 target_include_directories(SageDocsUi PUBLIC ${UI_SOURCES_DIR} ${LIB_SOURCES_DIR})
 
 # Link libraries 
-target_link_libraries(SageDocsUi SageDocsLib Qt6::Core Qt6::Widgets Qt6::Gui Qt6::Quick Qt6::QuickControls2)
+target_link_libraries(SageDocsUi SageDocsLib Qt6::Core Qt6::Widgets Qt6::Gui)
