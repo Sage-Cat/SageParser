@@ -2,10 +2,8 @@
 #include <filesystem>
 #include "IReader.hpp"
 #include <unordered_set>
-<<<<<<< HEAD
+
 #include "pugixml.hpp"
-=======
->>>>>>> f5c8d94cf7b49f9de629cccceb11a561298ec9e0
 namespace SageDocs
 {
     class XmlReader : public IReader
