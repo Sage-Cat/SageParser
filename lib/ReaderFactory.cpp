@@ -3,6 +3,8 @@
 #include "Readers/CsvReader.hpp"
 #include "Readers/XmlReader.hpp"
 
+#include "Types.hpp"
+
 namespace SageDocs
 {
     std::unique_ptr<IReader> ReaderFactory::createReader(ReaderFileType type)

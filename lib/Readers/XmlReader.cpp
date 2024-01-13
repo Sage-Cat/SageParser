@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "XmlReader.hpp"
-#include "pugixml.hpp"
+
 namespace SageDocs
 {
     void XmlReader::setFilePath(const std::filesystem::path &new_path)
@@ -15,6 +15,7 @@ namespace SageDocs
 
         m_filePath = new_path;
     }
+    // checking the xml file for tabularity
     bool checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level = 0)
     {
         int childrenCount = 0;
@@ -35,42 +36,45 @@ namespace SageDocs
     }
     std::shared_ptr<Dataset> XmlReader::readData()
     {
+        auto dataset = std::make_shared<Dataset>();
         pugi::xml_document doc;
         std::string filePathAsString = m_filePath.string();
         const char *filePathAsCString = filePathAsString.c_str();
-        pugi::xml_parse_result result = doc.load_file(filePathAsCString);
+        if (!doc.load_file(filePathAsCString))
+        {
+            throw std::runtime_error("Error loading XML file.");
+        }
         if (!checkXMLStructure(doc, structureSet))
         {
             throw std::runtime_error("Invalid XML structure: Expected tabular data.");
         }
-        if (!result)
-        {
-            throw result.description();
-        }
-        // pugi::xml_node items = doc.child("Root");
         pugi::xml_node items = doc.first_child();
-        auto dataset = std::make_shared<Dataset>();
-        for (auto parent = items; parent != PUGIXML_NULL; parent = parent.next_sibling())
+        try
         {
-            while (parent.first_child())
+            auto item = doc.first_child();
+            for (item; item != PUGIXML_NULL; item = item.first_child())
             {
-                parent = parent.first_child();
-            }
-            parent = parent.parent();
-            parent = parent.parent();
-            parent = parent.parent();
-            for (auto c = parent.first_child(); c != PUGIXML_NULL; c = c.next_sibling())
-            {
-                std::string childName = c.name();
-                std::vector<std::string> tmp;
-
-                for (auto i = c.first_child(); i != PUGIXML_NULL; i = i.next_sibling())
+                if (!item.first_child().first_child())
                 {
-                    dataset->columnNames.push_back(i.name());
-                    tmp.push_back(i.text().as_string());
+                    item = item.parent();
+                    break;
+                }
+            }
+            for (item; item != PUGIXML_NULL; item = item.next_sibling())
+            {
+                std::vector<std::string> tmp;
+                for (pugi::xml_node columnNode : item.children())
+                {
+                    dataset->columnNames.push_back(columnNode.name());
+                    tmp.push_back(columnNode.text().as_string());
                 }
                 dataset->dataRows.push_back(tmp);
             }
+        }
+        catch (const std::runtime_error &e)
+        {
+            std::cerr << "Exception: " << e.what() << std::endl;
+            // Additional steps to handle the error, such as terminating the program or requesting another file.
         }
         return dataset;
     }
