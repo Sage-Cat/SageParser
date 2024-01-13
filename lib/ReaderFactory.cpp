@@ -2,8 +2,11 @@
 
 #include "Readers/CsvReader.hpp"
 #include "Readers/XmlReader.hpp"
+<<<<<<< HEAD
 
 #include "Types.hpp"
+=======
+>>>>>>> f5c8d94cf7b49f9de629cccceb11a561298ec9e0
 
 namespace SageDocs
 {

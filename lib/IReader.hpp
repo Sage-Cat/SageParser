@@ -7,6 +7,16 @@
 
 namespace SageDocs
 {
+<<<<<<< HEAD
+=======
+    enum class ReaderFileType : int
+    {
+        CSV = 0,
+        XLSX,
+        XML
+    };
+
+>>>>>>> f5c8d94cf7b49f9de629cccceb11a561298ec9e0
     class IReader
     {
     public:

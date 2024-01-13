@@ -1,0 +1,1 @@
+-IC:/project/SageDocs/build/ui/SageDocsUi_autogen/include -IC:/project/SageDocs/ui -IC:/project/SageDocs/lib -isystem C:/Qt/6.7.0/mingw_64/include/QtCore -isystem C:/Qt/6.7.0/mingw_64/include -isystem "C:/Qt/6.7.0/mingw_64/mkspecs/win32-g++" -isystem C:/Qt/6.7.0/mingw_64/include/QtWidgets -isystem C:/Qt/6.7.0/mingw_64/include/QtGui

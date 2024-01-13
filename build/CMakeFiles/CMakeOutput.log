@@ -1,0 +1,133 @@
+The system is: Windows - 10.0.22631 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Qt/Tools/mingw1120_64/bin/gcc.exe 
+Build flags: ;;-m64
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+
+The C compiler identification is GNU, found in "C:/project/SageDocs/build/CMakeFiles/3.24.2/CompilerIdC/a.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Qt/Tools/mingw1120_64/bin/c++.exe 
+Build flags: ;;-m64
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+
+The CXX compiler identification is GNU, found in "C:/project/SageDocs/build/CMakeFiles/3.24.2/CompilerIdCXX/a.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: C:/project/SageDocs/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe -f Makefile cmTC_87cf3/fast && C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_87cf3.dir\build.make CMakeFiles/cmTC_87cf3.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_87cf3.dir/testCCompiler.c.obj
+C:\Qt\Tools\mingw1120_64\bin\gcc.exe   -m64  -o CMakeFiles\cmTC_87cf3.dir\testCCompiler.c.obj -c C:\project\SageDocs\build\CMakeFiles\CMakeTmp\testCCompiler.c
+Linking C executable cmTC_87cf3.exe
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_link_script CMakeFiles\cmTC_87cf3.dir\link.txt --verbose=1
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\cmTC_87cf3.dir/objects.a
+C:\Qt\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\cmTC_87cf3.dir/objects.a @CMakeFiles\cmTC_87cf3.dir\objects1.rsp
+C:\Qt\Tools\mingw1120_64\bin\gcc.exe -m64  -m64  -Wl,--whole-archive CMakeFiles\cmTC_87cf3.dir/objects.a -Wl,--no-whole-archive -o cmTC_87cf3.exe -Wl,--out-implib,libcmTC_87cf3.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_87cf3.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: C:/project/SageDocs/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe -f Makefile cmTC_0d17f/fast && C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_0d17f.dir\build.make CMakeFiles/cmTC_0d17f.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0d17f.dir/testCXXCompiler.cxx.obj
+C:\Qt\Tools\mingw1120_64\bin\c++.exe   -m64  -std=gnu++20 -o CMakeFiles\cmTC_0d17f.dir\testCXXCompiler.cxx.obj -c C:\project\SageDocs\build\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
+Linking CXX executable cmTC_0d17f.exe
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_link_script CMakeFiles\cmTC_0d17f.dir\link.txt --verbose=1
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\cmTC_0d17f.dir/objects.a
+C:\Qt\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\cmTC_0d17f.dir/objects.a @CMakeFiles\cmTC_0d17f.dir\objects1.rsp
+C:\Qt\Tools\mingw1120_64\bin\c++.exe -m64  -m64  -Wl,--whole-archive CMakeFiles\cmTC_0d17f.dir/objects.a -Wl,--no-whole-archive -o cmTC_0d17f.exe -Wl,--out-implib,libcmTC_0d17f.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_0d17f.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD succeeded with the following output:
+Change Dir: C:/project/SageDocs/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe -f Makefile cmTC_bbc5c/fast && C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_bbc5c.dir\build.make CMakeFiles/cmTC_bbc5c.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bbc5c.dir/src.c.obj
+C:\Qt\Tools\mingw1120_64\bin\gcc.exe -DCMAKE_HAVE_LIBC_PTHREAD  -m64  -o CMakeFiles\cmTC_bbc5c.dir\src.c.obj -c C:\project\SageDocs\build\CMakeFiles\CMakeTmp\src.c
+Linking C executable cmTC_bbc5c.exe
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_link_script CMakeFiles\cmTC_bbc5c.dir\link.txt --verbose=1
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\cmTC_bbc5c.dir/objects.a
+C:\Qt\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\cmTC_bbc5c.dir/objects.a @CMakeFiles\cmTC_bbc5c.dir\objects1.rsp
+C:\Qt\Tools\mingw1120_64\bin\gcc.exe -m64  -m64  -Wl,--whole-archive CMakeFiles\cmTC_bbc5c.dir/objects.a -Wl,--no-whole-archive -o cmTC_bbc5c.exe -Wl,--out-implib,libcmTC_bbc5c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_bbc5c.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Performing C++ SOURCE FILE Test HAVE_STDATOMIC succeeded with the following output:
+Change Dir: C:/project/SageDocs/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe -f Makefile cmTC_4c7b5/fast && C:/Qt/Tools/mingw1120_64/bin/mingw32-make.exe  -f CMakeFiles\cmTC_4c7b5.dir\build.make CMakeFiles/cmTC_4c7b5.dir/build
+mingw32-make.exe[1]: Entering directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4c7b5.dir/src.cxx.obj
+C:\Qt\Tools\mingw1120_64\bin\c++.exe -DHAVE_STDATOMIC  -m64  -std=gnu++20 -o CMakeFiles\cmTC_4c7b5.dir\src.cxx.obj -c C:\project\SageDocs\build\CMakeFiles\CMakeTmp\src.cxx
+Linking CXX executable cmTC_4c7b5.exe
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_link_script CMakeFiles\cmTC_4c7b5.dir\link.txt --verbose=1
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\cmTC_4c7b5.dir/objects.a
+C:\Qt\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\cmTC_4c7b5.dir/objects.a @CMakeFiles\cmTC_4c7b5.dir\objects1.rsp
+C:\Qt\Tools\mingw1120_64\bin\c++.exe -m64  -m64  -Wl,--whole-archive CMakeFiles\cmTC_4c7b5.dir/objects.a -Wl,--no-whole-archive -o cmTC_4c7b5.exe -Wl,--out-implib,libcmTC_4c7b5.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_4c7b5.dir\linklibs.rsp
+mingw32-make.exe[1]: Leaving directory 'C:/project/SageDocs/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include <atomic>
+#include <cstdint>
+
+int main(int, char **)
+{
+    volatile std::atomic<char>    size_1;
+    volatile std::atomic<short>   size_2;
+    volatile std::atomic<int>     size_4;
+    volatile std::atomic<int64_t> size_8;
+
+    ++size_1;
+    ++size_2;
+    ++size_4;
+    ++size_8;
+
+    (void)size_1.load(std::memory_order_relaxed);
+    (void)size_2.load(std::memory_order_relaxed);
+    (void)size_4.load(std::memory_order_relaxed);
+    (void)size_8.load(std::memory_order_relaxed);
+
+    return 0;
+}

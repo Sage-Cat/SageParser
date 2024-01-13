@@ -1,0 +1,3 @@
+C:\Qt\Tools\CMake_64\bin\cmake.exe -E rm -f CMakeFiles\SageDocsLib.dir/objects.a
+C:\Qt\Tools\mingw1120_64\bin\ar.exe qc CMakeFiles\SageDocsLib.dir/objects.a @CMakeFiles\SageDocsLib.dir\objects1.rsp
+C:\Qt\Tools\mingw1120_64\bin\c++.exe -m64 -g -m64 -shared -o ..\bin\libSageDocsLib.dll -Wl,--out-implib,libSageDocsLib.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\SageDocsLib.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\SageDocsLib.dir\linklibs.rsp

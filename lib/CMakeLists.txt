@@ -3,7 +3,11 @@ project(SageDocsLib)
 # third party
 find_package(rapidcsv REQUIRED)
 find_package(pugixml REQUIRED)
+<<<<<<< HEAD
 # find_package(xlnt REQUIRED)
+=======
+find_package(xlnt REQUIRED)
+>>>>>>> f5c8d94cf7b49f9de629cccceb11a561298ec9e0
 # find_package(ICU REQUIRED)
 
 set(LIB_SOURCES
@@ -29,5 +33,9 @@ add_library(SageDocsLib ${LIB_SOURCES})
 target_include_directories(SageDocsLib PUBLIC ${LIB_SOURCES_DIR})
 
 # target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv icu::icu pugixml::pugixml xlnt::xlnt)
+<<<<<<< HEAD
 target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml)
 # target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv icu::icu pugixml::pugixml xlnt::xlnt)
+=======
+target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml xlnt::xlnt)
+>>>>>>> f5c8d94cf7b49f9de629cccceb11a561298ec9e0
