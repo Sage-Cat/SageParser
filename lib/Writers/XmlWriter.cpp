@@ -42,7 +42,7 @@ namespace SageDocs
                     auto node_name = q.front();
                     q.pop();
                     pugi::xml_node child1 = price.append_child(node_name.c_str());
-                    const char *text = j.c_str();
+                    const char *text = node_text.c_str();
                     child1.text().set(text);
                 }
                 else

@@ -15,10 +15,32 @@ namespace SageDocs
 
         m_filePath = new_path;
     }
+    bool checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level = 0)
+    {
+        int childrenCount = 0;
+        for (pugi::xml_node childNode : node.children())
+        {
+            childrenCount++;
+        }
+        structureSet.insert(childrenCount);
+        for (pugi::xml_node childNode : node.children())
+        {
+            if (!checkXMLStructure(childNode, structureSet, level + 1))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
     std::shared_ptr<Dataset> XmlReader::readData()
     {
         pugi::xml_document doc;
         std::filesystem::path filePath = m_filePath;
+        if (!checkXMLStructure(doc, structureSet))
+        {
+            throw std::runtime_error("Invalid XML structure: Expected tabular data.");
+        }
         std::string filePathStr = filePath.string();
         pugi::xml_parse_result result = doc.load_file(filePathStr.c_str());
         if (!result)
