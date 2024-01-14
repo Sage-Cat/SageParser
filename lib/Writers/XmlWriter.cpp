@@ -10,10 +10,10 @@ namespace SageDocs
     void XmlWriter::setFilePath(const std::filesystem::path &new_path)
     {
         if (!std::filesystem::exists(new_path.parent_path()))
-            throw std::invalid_argument("Directory path does not exist.");
+            throw std::invalid_argument("Directory path - " + new_path.string() + " does not exist.");
 
         if (std::filesystem::is_directory(new_path))
-            throw std::invalid_argument("File path is a directory.");
+            throw std::invalid_argument("File path - " + new_path.string() + " is a directory.");
 
         m_filePath = new_path;
     }

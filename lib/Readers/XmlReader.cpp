@@ -8,10 +8,10 @@ namespace SageDocs
     void XmlReader::setFilePath(const std::filesystem::path &new_path)
     {
         if (!std::filesystem::exists(new_path))
-            throw std::invalid_argument("File path does not exist.");
+            throw std::invalid_argument("File path- " + new_path.string() + " does not exist.");
 
         if (!std::filesystem::is_regular_file(new_path))
-            throw std::invalid_argument("File path pointing not to a file.");
+            throw std::invalid_argument("File path - " + new_path.string() + " pointing not to a file.");
 
         m_filePath = new_path;
     }
