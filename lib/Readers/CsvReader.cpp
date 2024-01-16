@@ -44,7 +44,6 @@ namespace SageDocs
             SageDocs::Dataset::Row row = doc.GetRow<std::string>(i);
             dataset->dataRows.push_back(row);
         }
-
         return dataset;
     }
 }

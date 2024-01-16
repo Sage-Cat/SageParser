@@ -16,13 +16,15 @@ namespace SageDocs
     {
         NONE = 0,
         CSV,
-        XLSX
+        XLSX,
+        XML
     };
 
     enum class WriterFileType : int
     {
         NONE = 0,
         CSV,
-        XLSX
+        XLSX,
+        XML
     };
 }

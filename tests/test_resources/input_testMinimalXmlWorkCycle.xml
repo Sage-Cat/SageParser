@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?>
+<Root>
+    <Прайс>
+        <KART>3887946917</KART>
+        <KODKAT>7615</KODKAT>
+        <KODTNVED>8482200000</KODTNVED>
+        <NAIM>Подшипник 7615 (32315) &lt;ДК&gt;</NAIM>
+        <NAIMUKR>Підшипник 7615 (32315) &lt;ДК&gt;</NAIMUKR>
+        <PROIZVODIT>Дорожня карта</PROIZVODIT>
+        <PRIM>Підшипник роликовий конічний однорядний 75х160х55</PRIM>
+        <CENAPART>889,08</CENAPART>
+        <MINCENA>935,10</MINCENA>
+        <ROZNCENA>1309,08</ROZNCENA>
+        <BAZED>шт.</BAZED>
+        <STOCK>1</STOCK>
+        <SERTIF></SERTIF>
+        <MASSA>5,40700</MASSA>
+        <LENGTH>175</LENGTH>
+        <HEIGHT>70</HEIGHT>
+        <WIDTH>175</WIDTH>
+        <AUTOTOV></AUTOTOV>
+        <PDGRPTOV></PDGRPTOV>
+        <IMPORT>True</IMPORT>
+        <EFFECTIVE_AMOUNT></EFFECTIVE_AMOUNT>
+        <EFFECTIVE_PRICE></EFFECTIVE_PRICE>
+    </Прайс>
+    <Прайс>
+        <KART>69001280801</KART>
+        <KODKAT>49358582</KODKAT>
+        <KODTNVED>4016995290</KODTNVED>
+        <NAIM>Сальник КПП VAG 72X114X10 ACM (пр-во Corteco)</NAIM>
+        <NAIMUKR>Сальник КПП VAG 72X114X10 ACM (вир-во Corteco)</NAIMUKR>
+        <PROIZVODIT>Corteco</PROIZVODIT>
+        <PRIM></PRIM>
+        <CENAPART>387,00</CENAPART>
+        <MINCENA>421,08</MINCENA>
+        <ROZNCENA>701,76</ROZNCENA>
+        <BAZED>шт.</BAZED>
+        <STOCK>1</STOCK>
+        <SERTIF></SERTIF>
+        <MASSA>0,09300</MASSA>
+        <LENGTH>125</LENGTH>
+        <HEIGHT>15</HEIGHT>
+        <WIDTH>125</WIDTH>
+        <AUTOTOV></AUTOTOV>
+        <PDGRPTOV></PDGRPTOV>
+        <IMPORT>True</IMPORT>
+        <EFFECTIVE_AMOUNT></EFFECTIVE_AMOUNT>
+        <EFFECTIVE_PRICE></EFFECTIVE_PRICE>
+    </Прайс>
+    <Прайс>
+        <KART>69001290859</KART>
+        <KODKAT>09G325429H</KODKAT>
+        <KODTNVED>8421230090</KODTNVED>
+        <NAIM>фильтр АКПП</NAIM>
+        <NAIMUKR>фільтр АКПП</NAIMUKR>
+        <PROIZVODIT>VAG</PROIZVODIT>
+        <PRIM></PRIM>
+        <CENAPART>2745,36</CENAPART>
+        <MINCENA>2738,46</MINCENA>
+        <ROZNCENA>3286,14</ROZNCENA>
+        <BAZED>шт.</BAZED>
+        <STOCK>0</STOCK>
+        <SERTIF></SERTIF>
+        <MASSA>0,00000</MASSA>
+        <LENGTH>0</LENGTH>
+        <HEIGHT>0</HEIGHT>
+        <WIDTH>0</WIDTH>
+        <AUTOTOV></AUTOTOV>
+        <PDGRPTOV></PDGRPTOV>
+        <IMPORT>True</IMPORT>
+        <EFFECTIVE_AMOUNT></EFFECTIVE_AMOUNT>
+        <EFFECTIVE_PRICE></EFFECTIVE_PRICE>
+    </Прайс>
+</Root>
