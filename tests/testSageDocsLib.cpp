@@ -5,9 +5,11 @@
 
 #include "ReaderFactory.hpp"
 #include "Readers/CsvReader.hpp"
+// #include "Readers/XmlReader.hpp"
 
 #include "WriterFactory.hpp"
 #include "Writers/CsvWriter.hpp"
+#include "Writers/XmlWriter.hpp"
 
 std::string getResourcePath(const std::string &relativePath)
 {

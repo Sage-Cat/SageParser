@@ -17,8 +17,7 @@ namespace SageDocs
     }
 
     // checking the xml file for tabularity
-
-    bool checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level = 0)
+    bool XmlReader::checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level)
     {
         int childrenCount = 0;
         for (pugi::xml_node childNode : node.children())
@@ -38,17 +37,18 @@ namespace SageDocs
     }
     std::shared_ptr<Dataset> XmlReader::readData()
     {
+        int level = 0;
         auto dataset = std::make_shared<Dataset>();
         pugi::xml_document doc;
         std::string filePathAsString = m_filePath.string();
         const char *filePathAsCString = filePathAsString.c_str();
         if (!doc.load_file(filePathAsCString))
         {
-            throw std::runtime_error("Error loading XML file.");
+            std::cout << "Error loading XML file." << std::endl;
         }
-        if (!checkXMLStructure(doc, structureSet))
+        if (!checkXMLStructure(doc, structureSet, level))
         {
-            throw std::runtime_error("Invalid XML structure: Expected tabular data.");
+            std::cout << "Invalid XML structure: Expected tabular data." << std::endl;
         }
         pugi::xml_node items = doc.first_child();
         try

@@ -1,9 +1,9 @@
 #include "XmlWriter.hpp"
-#include "pugixml.hpp"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <queue>
+#include "pugixml.hpp"
 
 namespace SageDocs
 {
