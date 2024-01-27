@@ -15,6 +15,6 @@ namespace SageDocs
 
     protected:
         std::filesystem::path m_filePath{};
-        std::unordered_set<int> structureSet;
+        std::unordered_set<int> m_structureSet;
     };
 }

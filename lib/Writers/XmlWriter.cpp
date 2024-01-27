@@ -9,7 +9,7 @@ namespace SageDocs
 {
     void XmlWriter::setFilePath(const std::filesystem::path &new_path)
     {
-        if (!std::filesystem::exists(new_path.parent_path()))
+        if (!std::filesystem::is_regular_file(new_path.parent_path()))
             throw std::invalid_argument("Directory path - " + new_path.string() + " does not exist.");
 
         if (std::filesystem::is_directory(new_path))
@@ -27,7 +27,7 @@ namespace SageDocs
         declaration.append_attribute("encoding") = "UTF-8";
 
         pugi::xml_node root = doc.append_child("Root");
-        for (auto columnName : dataset->columnNames)
+        for (const auto &columnName : dataset->columnNames)
         {
             q.push(columnName);
         }
@@ -49,7 +49,7 @@ namespace SageDocs
                     throw std::runtime_error("queue is empty");
             }
         }
-        doc.save_file("result.xml");
+        doc.save_file(m_filePath.c_str());
     }
 
 }

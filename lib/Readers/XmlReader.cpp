@@ -19,11 +19,7 @@ namespace SageDocs
     // checking the xml file for tabularity
     bool XmlReader::checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level)
     {
-        int childrenCount = 0;
-        for (pugi::xml_node childNode : node.children())
-        {
-            childrenCount++;
-        }
+        int childrenCount = std::distance(node.begin(), node.end());
         structureSet.insert(childrenCount);
         for (pugi::xml_node childNode : node.children())
         {
@@ -40,15 +36,15 @@ namespace SageDocs
         int level = 0;
         auto dataset = std::make_shared<Dataset>();
         pugi::xml_document doc;
-        std::string filePathAsString = m_filePath.string();
-        const char *filePathAsCString = filePathAsString.c_str();
-        if (!doc.load_file(filePathAsCString))
+        if (!doc.load_file(m_filePath.c_str()))
         {
-            std::cout << "Error loading XML file." << std::endl;
+            std::cout << "Error loading XML file." << std::endl
+                      << std::endl;
         }
-        if (!checkXMLStructure(doc, structureSet, level))
+        if (!checkXMLStructure(doc, m_structureSet, level))
         {
-            std::cout << "Invalid XML structure: Expected tabular data." << std::endl;
+            std::cout << "Invalid XML structure: Expected tabular data." << std::endl
+                      << std::endl;
         }
         pugi::xml_node items = doc.first_child();
         try
@@ -67,10 +63,10 @@ namespace SageDocs
                 std::vector<std::string> tmp;
                 for (pugi::xml_node columnNode : item.children())
                 {
-                    dataset->columnNames.push_back(columnNode.name());
+                    dataset->columnNames.emplace_back(columnNode.name());
                     tmp.push_back(columnNode.text().as_string());
                 }
-                dataset->dataRows.push_back(tmp);
+                dataset->dataRows.emplace_back(tmp);
             }
         }
         catch (const std::runtime_error &e)
