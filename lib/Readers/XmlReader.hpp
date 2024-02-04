@@ -9,6 +9,8 @@ namespace SageDocs
     class XmlReader : public IReader
     {
     public:
+        XmlReader() = default;
+        void setDelimiter(char new_delimiter) override {}
         void setFilePath(const std::filesystem::path &new_path) override;
         std::shared_ptr<Dataset> readData() override;
         bool checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level);

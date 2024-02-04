@@ -28,9 +28,9 @@ namespace SageDocs
                 return false;
             }
         }
-
         return true;
     }
+
     std::shared_ptr<Dataset> XmlReader::readData()
     {
         int level = 0;

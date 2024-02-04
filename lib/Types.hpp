@@ -9,7 +9,8 @@ namespace SageDocs
         BESUGLAYA_INVOICE,
         OMEGA_INVOICE,
         OMEGA_PRICELIST,
-        ODOO_PRODUCTS
+        ODOO_PRODUCTS,
+        XML_EXAMPLE
     };
 
     enum class ReaderFileType : int

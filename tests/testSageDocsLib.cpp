@@ -2,6 +2,7 @@
 
 #include "DataProcessorFactory.cpp"
 #include "DataProcessors/SimpleTableProcessor.cpp"
+#include "DataProcessors/XmlProcessor.cpp"
 
 #include "ReaderFactory.hpp"
 #include "Readers/CsvReader.hpp"
@@ -13,7 +14,7 @@
 
 std::string getResourcePath(const std::string &relativePath)
 {
-    return std::string("TEST_RESOURCES_DIR") + "/" + relativePath;
+    return std::string(TEST_RESOURCES_DIR) + "/" + relativePath;
 }
 
 TEST(DataProcessorFactoryTest, ProperObjectIsCreated)
@@ -54,15 +55,15 @@ TEST(SageDocsLibTest, MinimalXmlWorkCycle)
     reader->setFilePath(getResourcePath("input_testMinimalXmlWorkCycle.xml"));
     std::shared_ptr<SageDocs::Dataset> inputDataset;
     EXPECT_NO_THROW(inputDataset = reader->readData());
-    EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"NAMEUKR", "Count", "Unit", "CENA"}));
-    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт", "123,10"}));
+    EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"NAIMUKR", "CENAPART", "BAZED"}));
+    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"Підшипник 7615 (32315)", "889,08", "шт."}));
 
     // 2. Process data
-    auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::SIMPLE_TABLE);
+    auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::XML_EXAMPLE);
     std::shared_ptr<SageDocs::Dataset> outputDataset;
     EXPECT_NO_THROW(outputDataset = processor->process(inputDataset));
-    EXPECT_EQ(outputDataset->columnNames, std::vector<std::string>({"name", "count", "unit", "price"}));
-    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Ім'я", "2", "шт.", "123,10"}));
+    EXPECT_EQ(outputDataset->columnNames, std::vector<std::string>({"name", "price", "unit"}));
+    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Підшипник 7615 (32315)", "889,08", "шт."}));
 
     // 3. Write data
     auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::XML);
