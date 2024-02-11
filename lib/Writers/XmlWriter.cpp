@@ -33,7 +33,7 @@ namespace SageDocs
             q.push(columnName);
         }
 
-        for (auto data : dataset->dataRows)
+        for (const auto &data : dataset->dataRows)
         {
             pugi::xml_node price = root.append_child("Price");
             for (auto node_text : data)

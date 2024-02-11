@@ -3,8 +3,6 @@ project(SageDocsLib)
 # third party
 find_package(rapidcsv REQUIRED)
 find_package(pugixml REQUIRED)
-# find_package(xlnt REQUIRED)
-# find_package(ICU REQUIRED)
 
 set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
@@ -16,7 +14,7 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OdooProductsProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OmegaInvoiceProcessor.cpp
-    ${LIB_SOURCES_DIR}/DataProcessors/XmlProcessor.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/OmegaPricelistProcessor.cpp
 
     ${LIB_SOURCES_DIR}/Readers/CsvReader.cpp
     ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp

@@ -1,8 +1,28 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Root>
     <Прайс>
+        <KART>3887946917</KART>
         <NAIMUKR>Підшипник 7615 (32315)</NAIMUKR>
+        <MINCENA>935,10</MINCENA>
         <CENAPART>889,08</CENAPART>
         <BAZED>шт.</BAZED>
+        <IMPORT>True</IMPORT>
     </Прайс>
+    <Прайс>
+        <KART>69001280801</KART>
+        <NAIMUKR>Сальнк КПП</NAIMUKR>
+        <MINCENA>421,08</MINCENA>
+        <CENAPART>387,00</CENAPART>
+        <BAZED>шт.</BAZED>
+        <IMPORT>True</IMPORT>
+    </Прайс>
+    <Прайс>
+        <KART>69001290859</KART>
+        <NAIMUKR>фільтр АКПП</NAIMUKR>
+        <MINCENA>2738,46</MINCENA>
+        <CENAPART>2745,36</CENAPART>
+        <BAZED>шт.</BAZED>
+        <IMPORT>True</IMPORT>
+    </Прайс>
+
 </Root>

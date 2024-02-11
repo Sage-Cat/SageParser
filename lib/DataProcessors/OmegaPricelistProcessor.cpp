@@ -1,5 +1,4 @@
-#include "XmlProcessor.hpp"
-
+#include "OmegaPricelistProcessor.hpp"
 namespace SageDocs
 {
 
@@ -8,22 +7,25 @@ namespace SageDocs
         // column names
         m_columnNamesAliases = {
             // name
-            {"NAIM", DefaultColumn::NAME},
+            // {"NAIM", DefaultColumn::NAME},
             {"NAIMUKR", DefaultColumn::NAME},
-            {"PRIM", DefaultColumn::NAME},
+            // {"PRIM", DefaultColumn::NAME},
 
-            // price
+            // price //15
             {"CENAPART", DefaultColumn::PRICE},
             {"MINCENA", DefaultColumn::PRICE},
-            {"ROZNCENA", DefaultColumn::PRICE},
+            //{"ROZNCENA", DefaultColumn::PRICE},
 
             // unit
             {"BAZED", DefaultColumn::UNIT},
 
             // id
             {"KART", DefaultColumn::ID},
-            {"KODKAT", DefaultColumn::ID},
-            {"KODTNVED", DefaultColumn::ID}
+            // {"KODKAT", DefaultColumn::ID},
+            //{"KODTNVED", DefaultColumn::ID}
+
+            // import
+            {"IMPORT", DefaultColumn::IMPORT}
 
         };
 

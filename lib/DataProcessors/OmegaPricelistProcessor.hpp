@@ -13,6 +13,7 @@ namespace SageDocs
         const auto UNIT = "unit";
         const auto PRICE = "price";
         const auto ID = "id";
+        const auto IMPORT = "import";
     }
 
     class XmlProcessor : public IDataProcessor

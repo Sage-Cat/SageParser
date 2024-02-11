@@ -2,7 +2,7 @@
 
 #include "DataProcessorFactory.cpp"
 #include "DataProcessors/SimpleTableProcessor.cpp"
-#include "DataProcessors/XmlProcessor.cpp"
+#include "DataProcessors/OmegaPricelistProcessor.cpp"
 
 #include "ReaderFactory.hpp"
 #include "Readers/CsvReader.hpp"
@@ -55,15 +55,17 @@ TEST(SageDocsLibTest, MinimalXmlWorkCycle)
     reader->setFilePath(getResourcePath("input_testMinimalXmlWorkCycle.xml"));
     std::shared_ptr<SageDocs::Dataset> inputDataset;
     EXPECT_NO_THROW(inputDataset = reader->readData());
-    EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"NAIMUKR", "CENAPART", "BAZED"}));
-    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"Підшипник 7615 (32315)", "889,08", "шт."}));
+    EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"KART", "NAIMUKR", "MINCENA", "CENAPART", "BAZED", "IMPORT", "KART", "NAIMUKR", "MINCENA", "CENAPART", "BAZED", "IMPORT", "KART", "NAIMUKR", "MINCENA", "CENAPART", "BAZED", "IMPORT"}));
+    EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"3887946917", "Підшипник 7615 (32315)", "935,10", "889,08", "шт.", "True", "69001280801", "Сальник КПП", "421,08", "387,00", "шт.", "True", "69001290859", "фільтр АКПП", "2738,46", "2745,36", "шт.", "True"}));
+    // EXPECT_EQ(inputDataset->columnNames, std::vector<std::string>({"KART", "NAIMUKR", "MINCENA", "CENAPART", "BAZED"}));
+    // EXPECT_EQ(inputDataset->dataRows.at(0), std::vector<std::string>({"3887946917", "Підшипник 7615 (32315)", "935,10", "889,08", "шт."}));
 
     // 2. Process data
-    auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::XML_EXAMPLE);
+    auto processor = SageDocs::DataProcessorFactory::createDataProcessor(SageDocs::DocType::OMEGA_XMLPRICELIST);
     std::shared_ptr<SageDocs::Dataset> outputDataset;
     EXPECT_NO_THROW(outputDataset = processor->process(inputDataset));
-    EXPECT_EQ(outputDataset->columnNames, std::vector<std::string>({"name", "price", "unit"}));
-    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"Підшипник 7615 (32315)", "889,08", "шт."}));
+    EXPECT_EQ(outputDataset->columnNames, std::vector<std::string>({"id", "name", "price", "price", "unit", "import", "id", "name", "price", "price", "unit", "import", "id", "name", "price", "price", "unit", "import"}));
+    EXPECT_EQ(outputDataset->dataRows.at(0), std::vector<std::string>({"3887946917", "Підшипник 7615 (32315)", "935,10", "889,08", "шт.", "True", "69001280801", "Сальник КПП", "421,08", "387,00", "шт.", "True", "69001290859", "фільтр АКПП", "2738,46", "2745,36", "шт.", "True"}));
 
     // 3. Write data
     auto writer = SageDocs::WriterFactory::createWriter(SageDocs::WriterFileType::XML);
