@@ -14,10 +14,13 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OdooProductsProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OmegaInvoiceProcessor.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/OmegaPricelistProcessor.cpp
 
     ${LIB_SOURCES_DIR}/Readers/CsvReader.cpp
+    ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp
 
     ${LIB_SOURCES_DIR}/Writers/CsvWriter.cpp
+    ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
 )
 
 add_library(SageDocsLib ${LIB_SOURCES})

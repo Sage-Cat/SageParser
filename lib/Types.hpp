@@ -9,20 +9,23 @@ namespace SageDocs
         BESUGLAYA_INVOICE,
         OMEGA_INVOICE,
         OMEGA_PRICELIST,
-        ODOO_PRODUCTS
+        ODOO_PRODUCTS,
+        OMEGA_XMLPRICELIST
     };
 
     enum class ReaderFileType : int
     {
         NONE = 0,
         CSV,
-        XLSX
+        XLSX,
+        XML
     };
 
     enum class WriterFileType : int
     {
         NONE = 0,
         CSV,
-        XLSX
+        XLSX,
+        XML
     };
 }
