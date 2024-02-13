@@ -18,6 +18,7 @@ namespace SageDocs
 
         m_filePath = new_path;
     }
+
     void XmlWriter::writeData(const std::shared_ptr<Dataset> &dataset)
     {
         // queue for columnNames
