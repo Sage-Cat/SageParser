@@ -16,5 +16,5 @@ set(TEST_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 
 # SUBDIRS
 add_subdirectory(lib)
-add_subdirectory(ui)
+# add_subdirectory(ui)
 add_subdirectory(tests)

@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <memory>
 
-#include "DataTable.hpp"
+#include "Table.hpp"
 
 namespace SageParser
 {
@@ -18,10 +18,10 @@ namespace SageParser
         virtual ~IReader() = default;
 
         /**
-         * @brief Reads data from the file and returns a representation in a DataTable.
+         * @brief Reads data from the file and returns a representation in a Table.
          * @exception std::runtime_error if can't find or open file for reading
          */
-        virtual std::shared_ptr<DataTable> read() = 0;
+        virtual std::shared_ptr<Table> read() = 0;
 
     protected:
         std::filesystem::path filePath;

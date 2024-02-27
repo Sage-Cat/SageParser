@@ -41,16 +41,16 @@ package SageParserLib {
     interface IReader {
         + setFilePath(filesystem::path) : void
         + setDelimiter(char) : void
-        + read() : shared_ptr<DataTable>
+        + read() : shared_ptr<Table>
     }
 
     interface IWriter {
         + setFilePath(filesystem::path) : void
-        + write(shared_ptr<DataTable>) : void
+        + write(shared_ptr<Table>) : void
     }
 
-    interface IDataTableProcessor {
-        + process(shared_ptr<DataTable>) : shared_ptr<DataTable>
+    interface AbstractProcessor {
+        + process(shared_ptr<Table>) : shared_ptr<Table>
     }
 
 }

@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <memory>
 
-#include "DataTable.hpp"
+#include "Table.hpp"
 
 namespace SageParser
 {
@@ -17,10 +17,10 @@ namespace SageParser
         virtual ~IWriter() = default;
 
         /**
-         * @brief Writes data to the file from the provided DataTable representation.
-         * @exception std::runtime_error if can't find or open file
+         * @brief Writes data to the file from the provided Table representation.
+         * @exception std::runtime_error if can't find or open file for writing
          */
-        virtual void write(const std::shared_ptr<DataTable> &dataTable) = 0;
+        virtual void write(const std::shared_ptr<Table> &Table) = 0;
 
     protected:
         std::filesystem::path filePath_;

@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "IReader.hpp"
-#include "DataTable.hpp"
+#include "Table.hpp"
 
 namespace SageParser
 {
@@ -14,7 +14,7 @@ namespace SageParser
         CsvReader(const std::filesystem::path &filePath, char delimiter = ',')
             : IReader(filePath), m_delimiter(delimiter) {}
 
-        std::shared_ptr<DataTable> read() override;
+        std::shared_ptr<Table> read() override;
 
     private:
         char m_delimiter;

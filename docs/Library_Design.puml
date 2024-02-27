@@ -8,7 +8,7 @@ package ui {
 }
 
 package lib {
-    class DataTable {
+    class Table {
         -columnNames : vector<string>
         -dataRows : vector<Rows>
     }
@@ -16,32 +16,32 @@ package lib {
     package Processors {
         class DataProcessorFactory
         {
-            createDataProcessor(docType) : IDataTableProcessor
+            createDataProcessor(docType) : AbstractProcessor
         }
 
-        class IDataTableProcessor {
-            +process(std::shared_ptr<DataTable>) : DataTable
+        class AbstractProcessor {
+            +process(std::shared_ptr<Table>) : Table
         }
 
-        class DefaultDataTableProcessor {
-            +process(std::shared_ptr<DataTable>) : DataTable
+        class DefaultTableProcessor {
+            +process(std::shared_ptr<Table>) : Table
         }
 
         class OmegaInvoiceProcessor {
-            +process(std::shared_ptr<DataTable>) : DataTable
+            +process(std::shared_ptr<Table>) : Table
         }
 
         class BesuglayaInvoiceProcessor {
-            +process(std::shared_ptr<DataTable>) : DataTable
+            +process(std::shared_ptr<Table>) : Table
         }
 
         note "Many other processors are not shown here" as N1
         N1 .. BesuglayaInvoiceProcessor
         N1 .. OmegaInvoiceProcessor
 
-        DefaultDataTableProcessor -up-|> IDataTableProcessor
-        BesuglayaInvoiceProcessor -up-|> DefaultDataTableProcessor
-        OmegaInvoiceProcessor -up-|> DefaultDataTableProcessor
+        DefaultTableProcessor -up-|> AbstractProcessor
+        BesuglayaInvoiceProcessor -up-|> DefaultTableProcessor
+        OmegaInvoiceProcessor -up-|> DefaultTableProcessor
     }
 
     package Writers {
@@ -52,17 +52,17 @@ package lib {
 
         interface IWriter {
             +setFilePath(new_path)
-            +write(DataTable)
+            +write(Table)
         }
 
         class CsvWriter {
             +setFilePath(new_path)
-            +write(DataTable)
+            +write(Table)
         }
 
         class XmlWriter {
             +setFilePath(new_path)
-            +write(DataTable)
+            +write(Table)
         }
 
         note "Many other writers not shown here" as N2
@@ -80,17 +80,17 @@ package lib {
 
         interface IReader {
             +setFilePath(new_path)
-            +read(): std::shared_ptr<DataTable>
+            +read(): std::shared_ptr<Table>
         }
 
         class CsvReader {
             +setFilePath(new_path)
-            +read(): std::shared_ptr<DataTable>
+            +read(): std::shared_ptr<Table>
         }
 
         class XlsxReader {
             +setFilePath(new_path)
-            +read(): std::shared_ptr<DataTable>
+            +read(): std::shared_ptr<Table>
         }
 
         note "Many other readers not shown here" as N3
@@ -101,17 +101,17 @@ package lib {
         XlsxReader -up-|> IReader
     }
 
-    DataTable -- IDataTableProcessor
+    Table -- AbstractProcessor
 }
 
 
 ReaderFactory --> IReader
 WriterFactory --> IWriter
-DataProcessorFactory --> IDataTableProcessor
+DataProcessorFactory --> AbstractProcessor
 
 SageParser --> DataProcessorFactory
 SageParser --> WriterFactory
 SageParser --> ReaderFactory
-SageParser --> DataTable
+SageParser --> Table
 
 @enduml

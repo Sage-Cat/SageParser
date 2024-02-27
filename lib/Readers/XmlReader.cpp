@@ -31,10 +31,10 @@ namespace SageParser
         return true;
     }
 
-    std::shared_ptr<DataTable> XmlReader::read()
+    std::shared_ptr<Table> XmlReader::read()
     {
         int level = 0;
-        auto DataTable = std::make_shared<DataTable>();
+        auto Table = std::make_shared<Table>();
         pugi::xml_document doc;
         if (!doc.load_file(m_filePath.c_str()))
         {
@@ -63,10 +63,10 @@ namespace SageParser
                 std::vector<std::string> tmp;
                 for (pugi::xml_node columnNode : item.children())
                 {
-                    DataTable->columnNames.emplace_back(columnNode.name());
+                    Table->columnNames.emplace_back(columnNode.name());
                     tmp.push_back(columnNode.text().as_string());
                 }
-                DataTable->dataRows.emplace_back(tmp);
+                Table->dataRows.emplace_back(tmp);
             }
         }
         catch (const std::runtime_error &e)
@@ -74,6 +74,6 @@ namespace SageParser
             std::cerr << "Exception: " << e.what() << std::endl;
             // Additional steps to handle the error, such as terminating the program or requesting another file.
         }
-        return DataTable;
+        return Table;
     }
 }

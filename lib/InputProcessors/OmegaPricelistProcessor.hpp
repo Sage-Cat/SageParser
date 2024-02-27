@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "IDataTableProcessor.hpp"
+#include "AbstractProcessor.hpp"
 
 namespace SageParser
 {
@@ -16,12 +16,12 @@ namespace SageParser
         const auto IMPORT = "import";
     }
 
-    class XmlProcessor : public IDataTableProcessor
+    class XmlProcessor : public AbstractProcessor
     {
     public:
         explicit XmlProcessor();
 
-        std::shared_ptr<DataTable> process(const std::shared_ptr<DataTable> &dataTable) override;
+        std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) override;
 
     protected:
         std::unordered_map<std::string, std::string>

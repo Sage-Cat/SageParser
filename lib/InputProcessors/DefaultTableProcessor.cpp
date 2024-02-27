@@ -1,4 +1,4 @@
-#include "DefaultDataTableProcessor.hpp"
+#include "DefaultTableProcessor.hpp"
 
 #include <array>
 #include <memory>
@@ -60,35 +60,60 @@ namespace SageParser
         {"мотор.компл", "компл"},
     });
 
-    std::shared_ptr<DataTable> DefaultDataTableProcessor::process(const std::shared_ptr<DataTable> &dataTable)
+    std::shared_ptr<Table> DefaultTableProcessor::process(const std::shared_ptr<Table> &table)
     {
-        auto new_DataTable = std::make_shared<DataTable>(*DataTable);
-
-        // Process column names
-        try
+        auto new_table = std::make_shared<Table>(*table);
+        std::unordered_map<std::string, std::string> columnNamesAliasesMap;
+        for (const auto &[key, value] : COLUMN_NAMES_ALIASES)
         {
-            for (auto &column_name : new_DataTable->columnNames())
+            columnNamesAliasesMap.emplace(key, value);
+        }
+
+        std::unordered_map<std::string, std::string> unitAliasesMap;
+        for (const auto &[key, value] : UNIT_ALIASES)
+        {
+            unitAliasesMap.emplace(key, value);
+        }
+
+        // Use ranges to filter and erase columns not in COLUMN_NAMES_ALIASES
+        for (const auto &columnName : new_table->columnNames())
+        {
+            if (columnNamesAliasesMap.find(columnName) == columnNamesAliasesMap.end())
             {
-                new_DataTable->renameColumn(column_name, COLUMN_NAMES_ALIASES.at(column_name));
+                new_table->erase(columnName);
+            }
+            else
+            {
+                auto aliasIt = columnNamesAliasesMap.find(columnName);
+                if (aliasIt != columnNamesAliasesMap.end() && aliasIt->first != aliasIt->second)
+                {
+                    new_table->renameColumn(columnName, aliasIt->second);
+                }
             }
         }
-        catch (const std::out_of_range &e)
-        {
-            throw std::invalid_argument("DefaultDataTableProcessor::process | Met unexpected column name");
-        }
 
+        // Update unit column based on UNIT_ALIASES
         try
         {
-            auto &unitColumn = new_DataTable[DefaultColumnNames::UNIT];
-            if (!unitColumn.empty())
-                for (auto &unit : unitColumn)
-                    unit = UNIT_ALIASES.at(unit);
+            auto &unitColumn = (*new_table)[DefaultColumnNames::UNIT];
+            for (auto &unit : unitColumn)
+            {
+                auto aliasIt = unitAliasesMap.find(unit);
+                if (aliasIt != unitAliasesMap.end())
+                {
+                    unit = aliasIt->second;
+                }
+                else
+                {
+                    throw std::invalid_argument("Encountered unexpected unit value");
+                }
+            }
         }
-        catch (const std::out_of_range &e)
+        catch (const std::out_of_range &)
         {
-            throw std::invalid_argument("DefaultDataTableProcessor::process | Met unexpected unit");
+            throw std::invalid_argument("DefaultTableProcessor::process | Encountered unexpected unit");
         }
 
-        return new_DataTable;
+        return new_table;
     }
 }
