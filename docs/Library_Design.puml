@@ -16,14 +16,14 @@ package lib {
     package Processors {
         class DataProcessorFactory
         {
-            createDataProcessor(docType) : IDataProcessor
+            createDataProcessor(docType) : ITableProcessor
         }
 
-        class IDataProcessor {
+        class ITableProcessor {
             +process(std::shared_ptr<Table>) : Table
         }
 
-        class SimpleTableProcessor {
+        class DefaultTableProcessor {
             +process(std::shared_ptr<Table>) : Table
         }
 
@@ -39,9 +39,9 @@ package lib {
         N1 .. BesuglayaInvoiceProcessor
         N1 .. OmegaInvoiceProcessor
 
-        SimpleTableProcessor -up-|> IDataProcessor
-        BesuglayaInvoiceProcessor -up-|> SimpleTableProcessor
-        OmegaInvoiceProcessor -up-|> SimpleTableProcessor
+        DefaultTableProcessor -up-|> ITableProcessor
+        BesuglayaInvoiceProcessor -up-|> DefaultTableProcessor
+        OmegaInvoiceProcessor -up-|> DefaultTableProcessor
     }
 
     package Writers {
@@ -101,13 +101,13 @@ package lib {
         XlsxReader -up-|> IReader
     }
 
-    Table -- IDataProcessor
+    Table -- ITableProcessor
 }
 
 
 ReaderFactory --> IReader
 WriterFactory --> IWriter
-DataProcessorFactory --> IDataProcessor
+DataProcessorFactory --> ITableProcessor
 
 SageParser --> DataProcessorFactory
 SageParser --> WriterFactory

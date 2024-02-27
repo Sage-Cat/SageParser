@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "DataProcessorFactory.cpp"
-#include "DataProcessors/SimpleTableProcessor.cpp"
+#include "DataProcessors/DefaultTableProcessor.cpp"
 #include "DataProcessors/OmegaPricelistProcessor.cpp"
 
 #include "ReaderFactory.hpp"
@@ -21,7 +21,7 @@ TEST(DataProcessorFactoryTest, ProperObjectIsCreated)
 {
     auto processor = SageParser::DataProcessorFactory::createDataProcessor(SageParser::DocType::SIMPLE_TABLE);
     ASSERT_NE(nullptr, processor);
-    EXPECT_EQ(typeid(SageParser::SimpleTableProcessor), typeid(*processor));
+    EXPECT_EQ(typeid(SageParser::DefaultTableProcessor), typeid(*processor));
 }
 
 TEST(SageParserLibTest, MinimalCsvWorkCycle)

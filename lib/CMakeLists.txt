@@ -10,7 +10,7 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/WriterFactory.cpp
     ${LIB_SOURCES_DIR}/Table.cpp
 
-    ${LIB_SOURCES_DIR}/DataProcessors/SimpleTableProcessor.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/DefaultTableProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OdooProductsProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OmegaInvoiceProcessor.cpp

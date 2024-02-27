@@ -2,23 +2,24 @@
 
 #include <unordered_map>
 
-#include "IDataProcessor.hpp"
+#include "ITableProcessor.hpp"
 
 namespace SageParser
 {
-    namespace DefaultColumnNames
+    namespace DefaultColumn
     {
         const auto NAME = "name";
         const auto COUNT = "count";
         const auto UNIT = "unit";
         const auto PRICE = "price";
+        const auto ID = "id";
+        const auto IMPORT = "import";
     }
 
-    // Does main column renaming (makes it standardised)
-    class SimpleTableProcessor : public IDataProcessor
+    class XmlProcessor : public ITableProcessor
     {
     public:
-        explicit SimpleTableProcessor();
+        explicit XmlProcessor();
 
         std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) override;
 
