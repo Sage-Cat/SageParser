@@ -4,7 +4,7 @@
 
 #include "Readers/XmlReader.hpp"
 #include "Writers/XmlWriter.hpp"
-#include "Table.hpp"
+#include "DataTable.hpp"
 
 std::filesystem::path CreateTempDirectory()
 {
@@ -13,17 +13,17 @@ std::filesystem::path CreateTempDirectory()
     return temp_dir;
 }
 
-std::shared_ptr<SageParser::Table> CreateSampleTable()
+std::shared_ptr<SageParser::DataTable> CreateSampleDataTable()
 {
-    auto Table = std::make_shared<SageParser::Table>();
+    auto DataTable = std::make_shared<SageParser::DataTable>();
 
-    Table->columnNames = {"Column1", "Column2", "Column3"};
-    Table->dataRows = {
+    DataTable->columnNames = {"Column1", "Column2", "Column3"};
+    DataTable->dataRows = {
         {"Row1Col1", "Row1Col2", "Row1Col3"},
         {"Row2Col1", "Row2Col2", "Row2Col3"},
     };
 
-    return Table;
+    return DataTable;
 }
 
 class XmlWriterReaderTest : public ::testing::Test
@@ -32,14 +32,14 @@ protected:
     std::filesystem::path temp_dir;
     std::shared_ptr<SageParser::XmlWriter> writer;
     std::shared_ptr<SageParser::XmlReader> reader;
-    std::shared_ptr<SageParser::Table> Table;
+    std::shared_ptr<SageParser::DataTable> DataTable;
 
     void SetUp() override
     {
         temp_dir = CreateTempDirectory();
         writer = std::make_shared<SageParser::XmlWriter>();
         reader = std::make_shared<SageParser::XmlReader>();
-        Table = CreateSampleTable();
+        DataTable = CreateSampleDataTable();
     }
 
     void TearDown() override
@@ -52,15 +52,15 @@ TEST_F(XmlWriterReaderTest, XmlWriteReadCycle)
 {
     auto file_path = temp_dir / "test.csv";
     writer->setFilePath(file_path);
-    writer->writeData(Table);
+    writer->write(DataTable);
 
     ASSERT_TRUE(std::filesystem::exists(file_path));
 
     reader->setFilePath(file_path);
-    auto read_Table = reader->readData();
+    auto read_DataTable = reader->read();
 
-    ASSERT_EQ(read_Table->columnNames, Table->columnNames);
-    ASSERT_EQ(read_Table->dataRows, Table->dataRows);
+    ASSERT_EQ(read_DataTable->columnNames, DataTable->columnNames);
+    ASSERT_EQ(read_DataTable->dataRows, DataTable->dataRows);
 }
 
 int main(int argc, char **argv)

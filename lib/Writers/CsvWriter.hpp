@@ -1,19 +1,18 @@
 #pragma once
 
+#include <filesystem>
+#include <memory>
+
 #include "IWriter.hpp"
+#include "DataTable.hpp"
 
 namespace SageParser
 {
     class CsvWriter : public IWriter
     {
     public:
-        CsvWriter() = default;
+        explicit CsvWriter(const std::filesystem::path &new_path) : IWriter(new_path) {}
 
-        void setFilePath(const std::filesystem::path &new_path) override;
-
-        void writeData(const std::shared_ptr<Table> &Table) override;
-
-    private:
-        std::filesystem::path m_filePath;
+        void write(const std::shared_ptr<DataTable> &dataTable) override;
     };
 }

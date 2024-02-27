@@ -8,9 +8,9 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
     ${LIB_SOURCES_DIR}/ReaderFactory.cpp
     ${LIB_SOURCES_DIR}/WriterFactory.cpp
-    ${LIB_SOURCES_DIR}/Table.cpp
+    ${LIB_SOURCES_DIR}/DataTable.cpp
 
-    ${LIB_SOURCES_DIR}/DataProcessors/DefaultTableProcessor.cpp
+    ${LIB_SOURCES_DIR}/DataProcessors/DefaultDataTableProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OdooProductsProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/OmegaInvoiceProcessor.cpp

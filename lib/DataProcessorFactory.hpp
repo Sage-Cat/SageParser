@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ITableProcessor.hpp"
+#include "IDataTableProcessor.hpp"
 
 namespace SageParser
 {
@@ -10,6 +10,6 @@ namespace SageParser
         DataProcessorFactory() = delete;
         ~DataProcessorFactory() = delete;
 
-        static std::unique_ptr<ITableProcessor> createDataProcessor(DocType type);
+        static std::unique_ptr<IDataTableProcessor> createDataProcessor(DocType type);
     };
 }

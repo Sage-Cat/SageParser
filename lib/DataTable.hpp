@@ -11,7 +11,7 @@ namespace SageParser
     using ColumnName = std::string;
     using Column = std::vector<std::string>;
 
-    class Table : public std::unordered_map<ColumnName, Column>
+    class DataTable : public std::unordered_map<ColumnName, Column>
     {
     public:
         // Function to get all column names as a vector

@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "ITableProcessor.hpp"
+#include "IDataTableProcessor.hpp"
 
 namespace SageParser
 {
@@ -15,18 +15,17 @@ namespace SageParser
     }
 
     /**
-     * @brief Process Table to have standard columns
+     * @brief Process DataTable to have standard columns
      */
-    class DefaultTableProcessor : public ITableProcessor
+    class DefaultDataTableProcessor : public IDataTableProcessor
     {
     public:
-        explicit DefaultTableProcessor() = default;
+        explicit DefaultDataTableProcessor() = default;
 
         /**
-         * @brief Convert all table columns to have standard names
-         *
-         * @exception std::invalid_argument if table has column with name not specified in columnNameAliasses
+         * @brief Convert all DataTable columns to have standard names
+         * @exception std::invalid_argument if DataTable has column with name not specified in columnNameAliasses
          */
-        std::shared_ptr<Table> process(const std::shared_ptr<Table> &table) override;
+        std::shared_ptr<DataTable> process(const std::shared_ptr<DataTable> &dataTable) override;
     };
 }

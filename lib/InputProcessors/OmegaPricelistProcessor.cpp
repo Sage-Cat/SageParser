@@ -51,12 +51,12 @@ namespace SageParser
             // компл
             {"мотор.компл", "компл"}};
     }
-    std::shared_ptr<Table> XmlProcessor::process(const std::shared_ptr<Table> &Table)
+    std::shared_ptr<DataTable> XmlProcessor::process(const std::shared_ptr<DataTable> &dataTable)
     {
-        auto new_Table = std::make_shared<Table>(*Table);
+        auto new_DataTable = std::make_shared<DataTable>(*DataTable);
 
         // Process column names
-        for (auto &column_name : new_Table->columnNames)
+        for (auto &column_name : new_DataTable->columnNames)
         {
             auto alias_it = m_columnNamesAliases.find(column_name);
             if (alias_it != m_columnNamesAliases.end())
@@ -66,11 +66,11 @@ namespace SageParser
         }
 
         // Process unit names
-        auto unitColumnIndexOpt = new_Table->getColumnIndex(DefaultColumn::UNIT);
+        auto unitColumnIndexOpt = new_DataTable->getColumnIndex(DefaultColumn::UNIT);
         if (unitColumnIndexOpt)
         {
             size_t unitColumnIndex = unitColumnIndexOpt.value();
-            for (auto &row : new_Table->dataRows)
+            for (auto &row : new_DataTable->dataRows)
             {
                 auto unit_alias_it = m_unitAliases.find(row[unitColumnIndex]);
                 if (unit_alias_it != m_unitAliases.end())
@@ -80,6 +80,6 @@ namespace SageParser
             }
         }
 
-        return new_Table;
+        return new_DataTable;
     }
 }

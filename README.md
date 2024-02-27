@@ -33,20 +33,20 @@ cmake --build .
 
 ##### Readers
 - **Preconditions:** File must exist, be accessible, and in a supported format.
-- **Postconditions:** File content is read into standard Table format, or an std::runtime_error exception is thrown.
+- **Postconditions:** File content is read into standard DataTable format, or an std::runtime_error exception is thrown.
 - **Invariants:** File integrity is maintained without altering content.
 
 ##### Writers
-- **Preconditions:** Table in a valid state, output path accessible.
+- **Preconditions:** DataTable in a valid state, output path accessible.
 - **Postconditions:** Data written to file in specified format or an std::runtime_error exception is thrown.
 - **Invariants:** Data format integrity during the write process.
 
 ##### IProcessors (Input Processors)
-- **Preconditions:** Non-standard format Table provided that should match with selected IProcessor.
-- **Postconditions:** Table transformed to standard format, or an std::invalid_argument exception is thrown.
+- **Preconditions:** Non-standard format DataTable provided that should match with selected IProcessor.
+- **Postconditions:** DataTable transformed to standard format, or an std::invalid_argument exception is thrown.
 - **Invariants:** Logical structure of data maintained, no data loss.
 
 ##### OProcessors (Output Processors)
-- **Preconditions:** Standard Table format provided for output.
-- **Postconditions:** Table transformed to desired output format.
-- **Invariants:** Integrity of Table's logical structure maintained, adapted to output requirements without loss.
+- **Preconditions:** Standard DataTable format provided for output.
+- **Postconditions:** DataTable transformed to desired output format.
+- **Invariants:** Integrity of DataTable's logical structure maintained, adapted to output requirements without loss.

@@ -5,7 +5,7 @@ namespace SageParser
     enum class DocType : int
     {
         NONE = 0,
-        SIMPLE_TABLE,
+        SIMPLE_DataTable,
         BESUGLAYA_INVOICE,
         OMEGA_INVOICE,
         OMEGA_PRICELIST,

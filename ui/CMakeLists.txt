@@ -24,8 +24,8 @@ set(UI_SOURCES
     ${UI_SOURCES_DIR}/Forms/OdooProductsForm.cpp
 )
 
-# Create client executable
-add_executable(SageParserUi ${UI_SOURCES})
+# Create client execuDataTable
+add_execuDataTable(SageParserUi ${UI_SOURCES})
 
 # Include directories
 target_include_directories(SageParserUi PUBLIC ${UI_SOURCES_DIR} ${LIB_SOURCES_DIR})

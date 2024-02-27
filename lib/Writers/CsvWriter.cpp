@@ -1,60 +1,50 @@
 #include "CsvWriter.hpp"
-
 #include <fstream>
-#include <sstream>
-#include <iomanip>
+#include <stdexcept>
 
 namespace SageParser
 {
-    void CsvWriter::setFilePath(const std::filesystem::path &new_path)
+    void CsvWriter::write(const std::shared_ptr<DataTable> &dataTable)
     {
-        if (!std::filesystem::exists(new_path.parent_path()))
-            throw std::invalid_argument("Directory path does not exist.");
+        if (filePath_.empty())
+            throw std::invalid_argument("File path is empty");
 
-        if (std::filesystem::is_directory(new_path))
-            throw std::invalid_argument("File path is a directory.");
-
-        m_filePath = new_path;
-    }
-
-    void CsvWriter::writeData(const std::shared_ptr<Table> &Table)
-    {
-        if (m_filePath.empty())
-            throw std::invalid_argument("m_filePath is empty");
-
-        std::ofstream file(m_filePath, std::ios::out | std::ios::trunc);
+        std::ofstream file(filePath_, std::ios::out | std::ios::trunc);
         if (!file.is_open())
-            throw std::invalid_argument("Could not open m_filePath for writing");
+            throw std::runtime_error("Could not open file for writing at " + filePath_.string());
 
-        // Helper lambda to quote and escape a field
-        auto quote = [](const std::string &field)
-        {
-            std::ostringstream ss;
-            ss << '"' << field << '"';
-            return ss.str();
-        };
+        // Assuming the DataTable uses an unordered_map for storage
+        if (dataTable->empty())
+            return;
 
-        // Write column names
-        bool firstColumn = true;
-        for (const auto &columnName : Table->columnNames)
+        // Write column headers
+        bool isFirstColumn = true;
+        for (const auto &columnName : dataTable->columnNames())
         {
-            if (!firstColumn)
+            if (!isFirstColumn)
                 file << ",";
-            file << quote(columnName);
-            firstColumn = false;
+            file << '"' << columnName << '"';
+            isFirstColumn = false;
         }
         file << "\n";
 
+        // Determine the number of rows by checking the size of the first column in the map
+        size_t numRows = dataTable->begin()->second.size();
+
         // Write data rows
-        for (const auto &row : Table->dataRows)
+        for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
         {
-            firstColumn = true;
-            for (const auto &cell : row)
+            isFirstColumn = true;
+            for (const auto &[columnName, columnData] : *dataTable)
             {
-                if (!firstColumn)
+                if (!isFirstColumn)
                     file << ",";
-                file << quote(cell);
-                firstColumn = false;
+                // Ensure row exists for column
+                if (rowIndex < columnData.size())
+                {
+                    file << '"' << columnData[rowIndex] << '"';
+                }
+                isFirstColumn = false;
             }
             file << "\n";
         }

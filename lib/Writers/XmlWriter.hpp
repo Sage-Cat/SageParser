@@ -11,7 +11,7 @@ namespace SageParser
 
         void setFilePath(const std::filesystem::path &new_path) override;
 
-        void writeData(const std::shared_ptr<Table> &Table) override;
+        void write(const std::shared_ptr<DataTable> &dataTable) override;
 
     protected:
         std::filesystem::path m_filePath;

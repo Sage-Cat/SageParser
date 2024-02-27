@@ -19,7 +19,7 @@ namespace SageParser
         m_filePath = new_path;
     }
 
-    void XmlWriter::writeData(const std::shared_ptr<Table> &Table)
+    void XmlWriter::write(const std::shared_ptr<DataTable> &dataTable)
     {
         // queue for columnNames
         std::queue<std::string> q;
@@ -29,12 +29,12 @@ namespace SageParser
         declaration.append_attribute("encoding") = "UTF-8";
 
         pugi::xml_node root = doc.append_child("Root");
-        for (const auto &columnName : Table->columnNames)
+        for (const auto &columnName : DataTable->columnNames)
         {
             q.push(columnName);
         }
 
-        for (const auto &data : Table->dataRows)
+        for (const auto &data : DataTable->dataRows)
         {
             pugi::xml_node price = root.append_child("Price");
             for (auto node_text : data)

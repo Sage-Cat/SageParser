@@ -2,13 +2,13 @@
 
 #include <memory>
 
-#include "Table.hpp"
+#include "DataTable.hpp"
 
 namespace SageParser
 {
-    class ITableProcessor
+    class IDataTableProcessor
     {
     public:
-        virtual std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) = 0;
+        virtual std::shared_ptr<DataTable> process(const std::shared_ptr<DataTable> &dataTable) = 0;
     };
 }

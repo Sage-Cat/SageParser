@@ -1,49 +1,31 @@
 #include "CsvReader.hpp"
 #include <filesystem>
 #include <stdexcept>
-
 #include <rapidcsv.h>
-namespace SageParser
-{
-    void CsvReader::setFilePath(const std::filesystem::path &new_path)
-    {
-        if (!std::filesystem::exists(new_path))
-            throw std::invalid_argument("File path does not exist.");
 
-        if (!std::filesystem::is_regular_file(new_path))
-            throw std::invalid_argument("File path pointing not to a file.");
+namespace SageParser {
 
-        m_filePath = new_path;
+std::shared_ptr<DataTable> CsvReader::read() {
+    if (filePath.empty()) {
+        throw std::invalid_argument("File path is empty");
     }
 
-    void CsvReader::setDelimiter(char new_delimiter)
-    {
-        m_delimiter = new_delimiter;
+    if (!std::filesystem::exists(filePath) || !std::filesystem::is_regular_file(filePath)) {
+        throw std::invalid_argument("Invalid file path provided.");
     }
 
-    std::shared_ptr<Table> CsvReader::readData()
-    {
-        if (m_filePath.empty())
-            throw std::invalid_argument("m_filePath is empty");
+    rapidcsv::Document doc(filePath.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
 
-        // Ensure the file exists
-        if (!std::filesystem::exists(m_filePath))
-            throw std::invalid_argument("File path provided does not exist.");
+    auto table = std::make_shared<DataTable>();
 
-        // Create a RapidCSV Document
-        rapidcsv::Document doc(m_filePath.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
+    std::vector<std::string> columnNames = doc.GetColumnNames();
 
-        auto Table = std::make_shared<SageParser::Table>();
-
-        // Set column names
-        Table->columnNames = doc.GetColumnNames();
-
-        // Read data rows
-        for (size_t i = 0; i < doc.GetRowCount(); ++i)
-        {
-            SageParser::Table::Row row = doc.GetRow<std::string>(i);
-            Table->dataRows.push_back(row);
-        }
-        return Table;
+    for (const auto& columnName : columnNames) {
+        std::vector<std::string> columnData = doc.GetColumn<std::string>(columnName);
+        (*table)[columnName] = std::move(columnData);
     }
+
+    return table;
 }
+
+} // namespace SageParser
