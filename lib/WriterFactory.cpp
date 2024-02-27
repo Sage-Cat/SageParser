@@ -3,7 +3,7 @@
 #include "Writers/CsvWriter.hpp"
 #include "Writers/XmlWriter.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     std::unique_ptr<IWriter> WriterFactory::createWriter(WriterFileType type)
     {

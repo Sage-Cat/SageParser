@@ -106,12 +106,12 @@ QWidget *OdooProductsForm::createFileInputRow(const QString &labelText, QLineEdi
 
 void OdooProductsForm::fillInputCombo(QComboBox *combo)
 {
-    combo->addItem(tr("CSV"), QVariant::fromValue(SageDocs::ReaderFileType::CSV));
+    combo->addItem(tr("CSV"), QVariant::fromValue(SageParser::ReaderFileType::CSV));
 }
 
 void OdooProductsForm::fillOutputCombo(QComboBox *combo)
 {
-    combo->addItem(tr("CSV"), QVariant::fromValue(SageDocs::WriterFileType::CSV));
+    combo->addItem(tr("CSV"), QVariant::fromValue(SageParser::WriterFileType::CSV));
 }
 
 QVariantMap OdooProductsForm::getInputData() const

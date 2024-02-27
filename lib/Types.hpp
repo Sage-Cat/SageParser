@@ -1,6 +1,6 @@
 #pragma once
 
-namespace SageDocs
+namespace SageParser
 {
     enum class DocType : int
     {

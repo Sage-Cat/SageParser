@@ -1,4 +1,4 @@
-project(SageDocsLib)
+project(SageParserLib)
 
 # third party
 find_package(rapidcsv REQUIRED)
@@ -8,7 +8,7 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/DataProcessorFactory.cpp
     ${LIB_SOURCES_DIR}/ReaderFactory.cpp
     ${LIB_SOURCES_DIR}/WriterFactory.cpp
-    ${LIB_SOURCES_DIR}/Dataset.cpp
+    ${LIB_SOURCES_DIR}/Table.cpp
 
     ${LIB_SOURCES_DIR}/DataProcessors/SimpleTableProcessor.cpp
     ${LIB_SOURCES_DIR}/DataProcessors/BesuglayaInvoiceProcessor.cpp
@@ -23,8 +23,8 @@ set(LIB_SOURCES
     ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
 )
 
-add_library(SageDocsLib ${LIB_SOURCES})
+add_library(SageParserLib ${LIB_SOURCES})
 
-target_include_directories(SageDocsLib PUBLIC ${LIB_SOURCES_DIR})
+target_include_directories(SageParserLib PUBLIC ${LIB_SOURCES_DIR})
 
-target_link_libraries(SageDocsLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml)
+target_link_libraries(SageParserLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml)

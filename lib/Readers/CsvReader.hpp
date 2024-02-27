@@ -4,7 +4,7 @@
 
 #include "IReader.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class CsvReader : public IReader
     {
@@ -14,7 +14,7 @@ namespace SageDocs
         // Interface methods
         void setFilePath(const std::filesystem::path &new_path) override;
         void setDelimiter(char new_delimiter) override;
-        std::shared_ptr<Dataset> readData() override;
+        std::shared_ptr<Table> readData() override;
 
     private:
         std::filesystem::path m_filePath{};

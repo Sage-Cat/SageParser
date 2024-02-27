@@ -2,7 +2,7 @@
 
 #include "IDataProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class DataProcessorFactory
     {

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "XmlReader.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     void XmlReader::setFilePath(const std::filesystem::path &new_path)
     {
@@ -31,10 +31,10 @@ namespace SageDocs
         return true;
     }
 
-    std::shared_ptr<Dataset> XmlReader::readData()
+    std::shared_ptr<Table> XmlReader::readData()
     {
         int level = 0;
-        auto dataset = std::make_shared<Dataset>();
+        auto Table = std::make_shared<Table>();
         pugi::xml_document doc;
         if (!doc.load_file(m_filePath.c_str()))
         {
@@ -63,10 +63,10 @@ namespace SageDocs
                 std::vector<std::string> tmp;
                 for (pugi::xml_node columnNode : item.children())
                 {
-                    dataset->columnNames.emplace_back(columnNode.name());
+                    Table->columnNames.emplace_back(columnNode.name());
                     tmp.push_back(columnNode.text().as_string());
                 }
-                dataset->dataRows.emplace_back(tmp);
+                Table->dataRows.emplace_back(tmp);
             }
         }
         catch (const std::runtime_error &e)
@@ -74,6 +74,6 @@ namespace SageDocs
             std::cerr << "Exception: " << e.what() << std::endl;
             // Additional steps to handle the error, such as terminating the program or requesting another file.
         }
-        return dataset;
+        return Table;
     }
 }

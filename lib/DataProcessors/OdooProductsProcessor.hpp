@@ -2,13 +2,13 @@
 
 #include "SimpleTableProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class OdooProductsProcessor : public SimpleTableProcessor
     {
     public:
         explicit OdooProductsProcessor() = default;
 
-        std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) override;
+        std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) override;
     };
 }

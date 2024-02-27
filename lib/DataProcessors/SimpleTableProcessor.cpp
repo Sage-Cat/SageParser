@@ -1,6 +1,6 @@
 #include "SimpleTableProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     SimpleTableProcessor::SimpleTableProcessor()
     {
@@ -53,12 +53,12 @@ namespace SageDocs
         };
     }
 
-    std::shared_ptr<Dataset> SimpleTableProcessor::process(const std::shared_ptr<Dataset> &dataset)
+    std::shared_ptr<Table> SimpleTableProcessor::process(const std::shared_ptr<Table> &Table)
     {
-        auto new_dataset = std::make_shared<Dataset>(*dataset);
+        auto new_Table = std::make_shared<Table>(*Table);
 
         // Process column names
-        for (auto &column_name : new_dataset->columnNames)
+        for (auto &column_name : new_Table->columnNames)
         {
             auto alias_it = m_columnNamesAliases.find(column_name);
             if (alias_it != m_columnNamesAliases.end())
@@ -68,11 +68,11 @@ namespace SageDocs
         }
 
         // Process unit names
-        auto unitColumnIndexOpt = new_dataset->getColumnIndex(DefaultColumnNames::UNIT);
+        auto unitColumnIndexOpt = new_Table->getColumnIndex(DefaultColumnNames::UNIT);
         if (unitColumnIndexOpt)
         {
             size_t unitColumnIndex = unitColumnIndexOpt.value();
-            for (auto &row : new_dataset->dataRows)
+            for (auto &row : new_Table->dataRows)
             {
                 auto unit_alias_it = m_unitAliases.find(row[unitColumnIndex]);
                 if (unit_alias_it != m_unitAliases.end())
@@ -82,6 +82,6 @@ namespace SageDocs
             }
         }
 
-        return new_dataset;
+        return new_Table;
     }
 }

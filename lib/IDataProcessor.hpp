@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Dataset.hpp"
+#include "Table.hpp"
 #include "Types.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class IDataProcessor
     {
     public:
-        virtual std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) = 0;
+        virtual std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) = 0;
     };
 }

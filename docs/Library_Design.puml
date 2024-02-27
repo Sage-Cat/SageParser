@@ -1,14 +1,14 @@
 @startuml
 
 package ui {
-    class SageDocs
+    class SageParser
     {
         +init()
     }
 }
 
 package lib {
-    class Dataset {
+    class Table {
         -columnNames : vector<string>
         -dataRows : vector<Rows>
     }
@@ -20,19 +20,19 @@ package lib {
         }
 
         class IDataProcessor {
-            +process(std::shared_ptr<Dataset>) : Dataset
+            +process(std::shared_ptr<Table>) : Table
         }
 
         class SimpleTableProcessor {
-            +process(std::shared_ptr<Dataset>) : Dataset
+            +process(std::shared_ptr<Table>) : Table
         }
 
         class OmegaInvoiceProcessor {
-            +process(std::shared_ptr<Dataset>) : Dataset
+            +process(std::shared_ptr<Table>) : Table
         }
 
         class BesuglayaInvoiceProcessor {
-            +process(std::shared_ptr<Dataset>) : Dataset
+            +process(std::shared_ptr<Table>) : Table
         }
 
         note "Many other processors are not shown here" as N1
@@ -52,17 +52,17 @@ package lib {
 
         interface IWriter {
             +setFilePath(new_path)
-            +writeData(Dataset)
+            +writeData(Table)
         }
 
         class CsvWriter {
             +setFilePath(new_path)
-            +writeData(Dataset)
+            +writeData(Table)
         }
 
         class XmlWriter {
             +setFilePath(new_path)
-            +writeData(Dataset)
+            +writeData(Table)
         }
 
         note "Many other writers not shown here" as N2
@@ -80,17 +80,17 @@ package lib {
 
         interface IReader {
             +setFilePath(new_path)
-            +readData(): std::shared_ptr<Dataset>
+            +readData(): std::shared_ptr<Table>
         }
 
         class CsvReader {
             +setFilePath(new_path)
-            +readData(): std::shared_ptr<Dataset>
+            +readData(): std::shared_ptr<Table>
         }
 
         class XlsxReader {
             +setFilePath(new_path)
-            +readData(): std::shared_ptr<Dataset>
+            +readData(): std::shared_ptr<Table>
         }
 
         note "Many other readers not shown here" as N3
@@ -101,7 +101,7 @@ package lib {
         XlsxReader -up-|> IReader
     }
 
-    Dataset -- IDataProcessor
+    Table -- IDataProcessor
 }
 
 
@@ -109,9 +109,9 @@ ReaderFactory --> IReader
 WriterFactory --> IWriter
 DataProcessorFactory --> IDataProcessor
 
-SageDocs --> DataProcessorFactory
-SageDocs --> WriterFactory
-SageDocs --> ReaderFactory
-SageDocs --> Dataset
+SageParser --> DataProcessorFactory
+SageParser --> WriterFactory
+SageParser --> ReaderFactory
+SageParser --> Table
 
 @enduml

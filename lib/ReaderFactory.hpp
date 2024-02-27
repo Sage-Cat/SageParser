@@ -2,7 +2,7 @@
 
 #include "IReader.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
 
     class ReaderFactory

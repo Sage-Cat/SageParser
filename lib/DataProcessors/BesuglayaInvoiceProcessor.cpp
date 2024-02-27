@@ -1,10 +1,10 @@
 #include "BesuglayaInvoiceProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
-    std::shared_ptr<Dataset> BesuglayaInvoiceProcessor::process(const std::shared_ptr<Dataset> &dataset)
+    std::shared_ptr<Table> BesuglayaInvoiceProcessor::process(const std::shared_ptr<Table> &Table)
     {
         // TODO: implementation
-        return SimpleTableProcessor::process(dataset);
+        return SimpleTableProcessor::process(Table);
     }
 }

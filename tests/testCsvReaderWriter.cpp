@@ -4,7 +4,7 @@
 
 #include "Readers/CsvReader.hpp"
 #include "Writers/CsvWriter.hpp"
-#include "Dataset.hpp"
+#include "Table.hpp"
 
 std::filesystem::path CreateTempDirectory()
 {
@@ -13,33 +13,33 @@ std::filesystem::path CreateTempDirectory()
     return temp_dir;
 }
 
-std::shared_ptr<SageDocs::Dataset> CreateSampleDataset()
+std::shared_ptr<SageParser::Table> CreateSampleTable()
 {
-    auto dataset = std::make_shared<SageDocs::Dataset>();
+    auto Table = std::make_shared<SageParser::Table>();
 
-    dataset->columnNames = {"Column1", "Column2", "Column3"};
-    dataset->dataRows = {
+    Table->columnNames = {"Column1", "Column2", "Column3"};
+    Table->dataRows = {
         {"Row1Col1", "Row1Col2", "Row1Col3"},
         {"Row2Col1", "Row2Col2", "Row2Col3"},
     };
 
-    return dataset;
+    return Table;
 }
 
 class CsvWriterReaderTest : public ::testing::Test
 {
 protected:
     std::filesystem::path temp_dir;
-    std::shared_ptr<SageDocs::CsvWriter> writer;
-    std::shared_ptr<SageDocs::CsvReader> reader;
-    std::shared_ptr<SageDocs::Dataset> dataset;
+    std::shared_ptr<SageParser::CsvWriter> writer;
+    std::shared_ptr<SageParser::CsvReader> reader;
+    std::shared_ptr<SageParser::Table> Table;
 
     void SetUp() override
     {
         temp_dir = CreateTempDirectory();
-        writer = std::make_shared<SageDocs::CsvWriter>();
-        reader = std::make_shared<SageDocs::CsvReader>();
-        dataset = CreateSampleDataset();
+        writer = std::make_shared<SageParser::CsvWriter>();
+        reader = std::make_shared<SageParser::CsvReader>();
+        Table = CreateSampleTable();
     }
 
     void TearDown() override
@@ -52,15 +52,15 @@ TEST_F(CsvWriterReaderTest, WriteReadCycle)
 {
     auto file_path = temp_dir / "test.csv";
     writer->setFilePath(file_path);
-    writer->writeData(dataset);
+    writer->writeData(Table);
 
     ASSERT_TRUE(std::filesystem::exists(file_path));
 
     reader->setFilePath(file_path);
-    auto read_dataset = reader->readData();
+    auto read_Table = reader->readData();
 
-    ASSERT_EQ(read_dataset->columnNames, dataset->columnNames);
-    ASSERT_EQ(read_dataset->dataRows, dataset->dataRows);
+    ASSERT_EQ(read_Table->columnNames, Table->columnNames);
+    ASSERT_EQ(read_Table->dataRows, Table->dataRows);
 }
 
 int main(int argc, char **argv)

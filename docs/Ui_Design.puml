@@ -1,6 +1,6 @@
 @startuml
 
-package SageDocsUI {
+package SageParserUI {
 
     class MainWindow {
         - m_taskSelectionWidget : TaskSelectionWidget
@@ -36,21 +36,21 @@ package SageDocsUI {
     }
 }
 
-package SageDocsLib {
+package SageParserLib {
 
     interface IReader {
         + setFilePath(filesystem::path) : void
         + setDelimiter(char) : void
-        + readData() : shared_ptr<Dataset>
+        + readData() : shared_ptr<Table>
     }
 
     interface IWriter {
         + setFilePath(filesystem::path) : void
-        + writeData(shared_ptr<Dataset>) : void
+        + writeData(shared_ptr<Table>) : void
     }
 
     interface IDataProcessor {
-        + process(shared_ptr<Dataset>) : shared_ptr<Dataset>
+        + process(shared_ptr<Table>) : shared_ptr<Table>
     }
 
 }
@@ -64,6 +64,6 @@ TaskSelectionWidget ..> TaskManager : triggers processing
 DynamicInputForm ..> TaskManager : provides file paths and parameters
 ProgressDialog <-- TaskManager : updates
 
-TaskManager ..> SageDocsLib : uses
+TaskManager ..> SageParserLib : uses
 
 @enduml

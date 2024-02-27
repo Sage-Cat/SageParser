@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iomanip>
 
-namespace SageDocs
+namespace SageParser
 {
     void CsvWriter::setFilePath(const std::filesystem::path &new_path)
     {
@@ -17,7 +17,7 @@ namespace SageDocs
         m_filePath = new_path;
     }
 
-    void CsvWriter::writeData(const std::shared_ptr<Dataset> &dataset)
+    void CsvWriter::writeData(const std::shared_ptr<Table> &Table)
     {
         if (m_filePath.empty())
             throw std::invalid_argument("m_filePath is empty");
@@ -36,7 +36,7 @@ namespace SageDocs
 
         // Write column names
         bool firstColumn = true;
-        for (const auto &columnName : dataset->columnNames)
+        for (const auto &columnName : Table->columnNames)
         {
             if (!firstColumn)
                 file << ",";
@@ -46,7 +46,7 @@ namespace SageDocs
         file << "\n";
 
         // Write data rows
-        for (const auto &row : dataset->dataRows)
+        for (const auto &row : Table->dataRows)
         {
             firstColumn = true;
             for (const auto &cell : row)

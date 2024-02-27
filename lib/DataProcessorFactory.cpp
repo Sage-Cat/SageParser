@@ -2,7 +2,7 @@
 #include "DataProcessors/SimpleTableProcessor.hpp"
 #include "DataProcessors/OmegaPricelistProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     std::unique_ptr<IDataProcessor> DataProcessorFactory::createDataProcessor(DocType type)
     {

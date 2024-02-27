@@ -4,7 +4,7 @@
 
 #include "IDataProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     namespace DefaultColumnNames
     {
@@ -20,7 +20,7 @@ namespace SageDocs
     public:
         explicit SimpleTableProcessor();
 
-        std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) override;
+        std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) override;
 
     protected:
         std::unordered_map<std::string, std::string>

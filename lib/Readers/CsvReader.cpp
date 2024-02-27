@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include <rapidcsv.h>
-namespace SageDocs
+namespace SageParser
 {
     void CsvReader::setFilePath(const std::filesystem::path &new_path)
     {
@@ -21,7 +21,7 @@ namespace SageDocs
         m_delimiter = new_delimiter;
     }
 
-    std::shared_ptr<Dataset> CsvReader::readData()
+    std::shared_ptr<Table> CsvReader::readData()
     {
         if (m_filePath.empty())
             throw std::invalid_argument("m_filePath is empty");
@@ -33,17 +33,17 @@ namespace SageDocs
         // Create a RapidCSV Document
         rapidcsv::Document doc(m_filePath.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
 
-        auto dataset = std::make_shared<SageDocs::Dataset>();
+        auto Table = std::make_shared<SageParser::Table>();
 
         // Set column names
-        dataset->columnNames = doc.GetColumnNames();
+        Table->columnNames = doc.GetColumnNames();
 
         // Read data rows
         for (size_t i = 0; i < doc.GetRowCount(); ++i)
         {
-            SageDocs::Dataset::Row row = doc.GetRow<std::string>(i);
-            dataset->dataRows.push_back(row);
+            SageParser::Table::Row row = doc.GetRow<std::string>(i);
+            Table->dataRows.push_back(row);
         }
-        return dataset;
+        return Table;
     }
 }

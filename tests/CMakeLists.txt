@@ -1,13 +1,13 @@
 find_package(GTest REQUIRED)
 
-add_executable(TestSageDocsLib ${TEST_SOURCES_DIR}/testSageDocsLib.cpp)
+add_executable(TestSageParserLib ${TEST_SOURCES_DIR}/testSageParserLib.cpp)
 
-target_include_directories(TestSageDocsLib PUBLIC ${LIB_SOURCES})
+target_include_directories(TestSageParserLib PUBLIC ${LIB_SOURCES})
 
-target_link_libraries(TestSageDocsLib SageDocsLib)
-target_link_libraries(TestSageDocsLib GTest::GTest GTest::Main)
+target_link_libraries(TestSageParserLib SageParserLib)
+target_link_libraries(TestSageParserLib GTest::GTest GTest::Main)
 
-add_test(NAME TestSageDocsLib COMMAND TestSageDocsLib)
+add_test(NAME TestSageParserLib COMMAND TestSageParserLib)
 
 # Move test files to exetutable directory
 set(RESOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test_resources")

@@ -1,10 +1,10 @@
 #include "OdooProductsProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
-    std::shared_ptr<Dataset> OdooProductsProcessor::process(const std::shared_ptr<Dataset> &dataset)
+    std::shared_ptr<Table> OdooProductsProcessor::process(const std::shared_ptr<Table> &Table)
     {
         // TODO: implementation
-        return SimpleTableProcessor::process(dataset);
+        return SimpleTableProcessor::process(Table);
     }
 }

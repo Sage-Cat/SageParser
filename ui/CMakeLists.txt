@@ -1,4 +1,4 @@
-project(SageDocsUi)
+project(SageParserUi)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -25,10 +25,10 @@ set(UI_SOURCES
 )
 
 # Create client executable
-add_executable(SageDocsUi ${UI_SOURCES})
+add_executable(SageParserUi ${UI_SOURCES})
 
 # Include directories
-target_include_directories(SageDocsUi PUBLIC ${UI_SOURCES_DIR} ${LIB_SOURCES_DIR})
+target_include_directories(SageParserUi PUBLIC ${UI_SOURCES_DIR} ${LIB_SOURCES_DIR})
 
 # Link libraries 
-target_link_libraries(SageDocsUi SageDocsLib Qt6::Core Qt6::Widgets Qt6::Gui)
+target_link_libraries(SageParserUi SageParserLib Qt6::Core Qt6::Widgets Qt6::Gui)

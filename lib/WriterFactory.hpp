@@ -2,7 +2,7 @@
 
 #include "IWriter.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class WriterFactory
     {
