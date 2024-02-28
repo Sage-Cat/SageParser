@@ -46,7 +46,7 @@ namespace SageParserTest
         }
     };
 
-    TEST_F(CsvWriterTest, WritesTableToCsvSuccessfully)
+    TEST_F(CsvWriterTest, WriteTableToFile)
     {
         SageParser::CsvWriter writer(tempFilePath);
         writer.write(table);

@@ -30,7 +30,7 @@ namespace SageParserTest
         }
     };
 
-    TEST_F(CsvReaderTest, ReadsValidCsvSuccessfully)
+    TEST_F(CsvReaderTest, ReadTableFromFile)
     {
         SageParser::CsvReader reader(tempFilePath, delimiter);
         auto table = reader.read();
@@ -59,7 +59,7 @@ namespace SageParserTest
         EXPECT_EQ((*table)["Name"][1], "Jane Doe") << "Second entry of 'Name' column should be 'Jane Doe'.";
     }
 
-    TEST_F(CsvReaderTest, ThrowsWhenFileNotFound)
+    TEST_F(CsvReaderTest, ThrowWhenFileNotFound)
     {
         std::filesystem::path invalidPath = "nonexistent.csv";
         SageParser::CsvReader reader(invalidPath, delimiter);
