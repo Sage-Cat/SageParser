@@ -1,7 +1,7 @@
 from conan import ConanFile
 
 
-class SageDocsPkg(ConanFile):
+class SageParserPkg(ConanFile):
     name = "sage_docs"
     version = "1.0.0"
     generators = "CMakeDeps", "CMakeToolchain"

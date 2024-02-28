@@ -1,8 +1,18 @@
 #pragma once
 
-namespace SageDocs
+namespace SageParser
 {
-    enum class DocType : int
+    enum class InputProcessors : int
+    {
+        DEFAULT = 0,
+        BESUGLAYA_INVOICE,
+        OMEGA_INVOICE,
+        OMEGA_PRICELIST,
+        ODOO_PRODUCTS,
+        OMEGA_XMLPRICELIST
+    };
+
+    enum class OutputProcessors : int
     {
         NONE = 0,
         SIMPLE_TABLE,

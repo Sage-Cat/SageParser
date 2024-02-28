@@ -2,25 +2,26 @@
 
 #include <unordered_map>
 
-#include "IDataProcessor.hpp"
+#include "IProcessor.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
-    namespace DefaultColumnNames
+    namespace DefaultColumn
     {
         const auto NAME = "name";
         const auto COUNT = "count";
         const auto UNIT = "unit";
         const auto PRICE = "price";
+        const auto ID = "id";
+        const auto IMPORT = "import";
     }
 
-    // Does main column renaming (makes it standardised)
-    class SimpleTableProcessor : public IDataProcessor
+    class XmlProcessor : public IProcessor
     {
     public:
-        explicit SimpleTableProcessor();
+        explicit XmlProcessor();
 
-        std::shared_ptr<Dataset> process(const std::shared_ptr<Dataset> &dataset) override;
+        std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) override;
 
     protected:
         std::unordered_map<std::string, std::string>

@@ -1,62 +1,51 @@
 #include "CsvWriter.hpp"
+#include <stdexcept>
+#include <ranges>
 
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-
-namespace SageDocs
+namespace SageParser
 {
-    void CsvWriter::setFilePath(const std::filesystem::path &new_path)
+
+    void CsvWriter::write(const std::shared_ptr<Table> &table)
     {
-        if (!std::filesystem::exists(new_path.parent_path()))
-            throw std::invalid_argument("Directory path does not exist.");
+        if (filePath_.empty())
+        {
+            throw std::invalid_argument("File path is empty");
+        }
 
-        if (std::filesystem::is_directory(new_path))
-            throw std::invalid_argument("File path is a directory.");
-
-        m_filePath = new_path;
-    }
-
-    void CsvWriter::writeData(const std::shared_ptr<Dataset> &dataset)
-    {
-        if (m_filePath.empty())
-            throw std::invalid_argument("m_filePath is empty");
-
-        std::ofstream file(m_filePath, std::ios::out | std::ios::trunc);
+        std::ofstream file(filePath_, std::ios::out | std::ios::trunc);
         if (!file.is_open())
-            throw std::invalid_argument("Could not open m_filePath for writing");
-
-        // Helper lambda to quote and escape a field
-        auto quote = [](const std::string &field)
         {
-            std::ostringstream ss;
-            ss << '"' << field << '"';
-            return ss.str();
-        };
-
-        // Write column names
-        bool firstColumn = true;
-        for (const auto &columnName : dataset->columnNames)
-        {
-            if (!firstColumn)
-                file << ",";
-            file << quote(columnName);
-            firstColumn = false;
+            throw std::runtime_error("Could not open file for writing at " + filePath_.string());
         }
-        file << "\n";
 
-        // Write data rows
-        for (const auto &row : dataset->dataRows)
+        if (table->empty())
         {
-            firstColumn = true;
-            for (const auto &cell : row)
+            return; // Early exit if table is empty
+        }
+
+        // Use getOrder to respect the column order
+        const auto &columnOrder = table->getOrder();
+        bool isFirstColumn = true;
+        for (const auto &columnName : columnOrder)
+        {
+            file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << columnName << (m_useQuotes ? "\"" : "");
+            isFirstColumn = false;
+        }
+        file << '\n';
+
+        // Assuming all columns have the same number of rows
+        size_t numRows = table->data().begin()->second.size();
+        for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
+        {
+            isFirstColumn = true;
+            for (const auto &columnName : columnOrder)
             {
-                if (!firstColumn)
-                    file << ",";
-                file << quote(cell);
-                firstColumn = false;
+                const auto &columnData = table->data().at(columnName);
+                file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << (rowIndex < columnData.size() ? columnData[rowIndex] : "") << (m_useQuotes ? "\"" : "");
+                isFirstColumn = false;
             }
-            file << "\n";
+            file << '\n';
         }
     }
-}
+
+} // namespace SageParser

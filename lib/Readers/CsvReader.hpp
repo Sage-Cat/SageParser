@@ -1,23 +1,22 @@
 #pragma once
 
 #include <filesystem>
+#include <memory>
 
 #include "IReader.hpp"
+#include "Table.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class CsvReader : public IReader
     {
     public:
-        CsvReader() = default;
+        CsvReader(const std::filesystem::path &filePath, char delimiter = ',')
+            : IReader(filePath), m_delimiter(delimiter) {}
 
-        // Interface methods
-        void setFilePath(const std::filesystem::path &new_path) override;
-        void setDelimiter(char new_delimiter) override;
-        std::shared_ptr<Dataset> readData() override;
+        std::shared_ptr<Table> read() override;
 
     private:
-        std::filesystem::path m_filePath{};
-        char m_delimiter{','};
+        char m_delimiter;
     };
 }

@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include "pugixml.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class XmlReader : public IReader
     {
@@ -12,7 +12,7 @@ namespace SageDocs
         XmlReader() = default;
         void setDelimiter(char new_delimiter) override {}
         void setFilePath(const std::filesystem::path &new_path) override;
-        std::shared_ptr<Dataset> readData() override;
+        std::shared_ptr<Table> read() override;
         bool checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level);
 
     protected:

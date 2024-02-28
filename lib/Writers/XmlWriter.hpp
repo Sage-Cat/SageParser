@@ -2,7 +2,7 @@
 
 #include "IWriter.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     class XmlWriter : public IWriter
     {
@@ -11,7 +11,7 @@ namespace SageDocs
 
         void setFilePath(const std::filesystem::path &new_path) override;
 
-        void writeData(const std::shared_ptr<Dataset> &dataset) override;
+        void write(const std::shared_ptr<Table> &Table) override;
 
     protected:
         std::filesystem::path m_filePath;

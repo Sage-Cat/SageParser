@@ -6,7 +6,7 @@
 #include <queue>
 #include "pugixml.hpp"
 
-namespace SageDocs
+namespace SageParser
 {
     void XmlWriter::setFilePath(const std::filesystem::path &new_path)
     {
@@ -19,7 +19,7 @@ namespace SageDocs
         m_filePath = new_path;
     }
 
-    void XmlWriter::writeData(const std::shared_ptr<Dataset> &dataset)
+    void XmlWriter::write(const std::shared_ptr<Table> &Table)
     {
         // queue for columnNames
         std::queue<std::string> q;
@@ -29,12 +29,12 @@ namespace SageDocs
         declaration.append_attribute("encoding") = "UTF-8";
 
         pugi::xml_node root = doc.append_child("Root");
-        for (const auto &columnName : dataset->columnNames)
+        for (const auto &columnName : Table->columnNames)
         {
             q.push(columnName);
         }
 
-        for (const auto &data : dataset->dataRows)
+        for (const auto &data : Table->dataRows)
         {
             pugi::xml_node price = root.append_child("Price");
             for (auto node_text : data)

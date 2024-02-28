@@ -1,19 +1,24 @@
 #pragma once
 
-#include "IWriter.hpp"
+#include <fstream>
+#include <memory>
+#include <string>
 
-namespace SageDocs
+#include "IWriter.hpp"
+#include "Table.hpp"
+
+namespace SageParser
 {
     class CsvWriter : public IWriter
     {
     public:
-        CsvWriter() = default;
+        explicit CsvWriter(const std::filesystem::path &new_path, char delimiter = ',', bool useQuotes = true)
+            : IWriter(new_path), m_delimiter(delimiter), m_useQuotes(useQuotes) {}
 
-        void setFilePath(const std::filesystem::path &new_path) override;
-
-        void writeData(const std::shared_ptr<Dataset> &dataset) override;
+        void write(const std::shared_ptr<Table> &table) override;
 
     private:
-        std::filesystem::path m_filePath;
+        char m_delimiter{'.'};
+        bool m_useQuotes{true};
     };
 }
