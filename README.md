@@ -41,12 +41,8 @@ cmake --build .
 - **Postconditions:** Data written to file in specified format or an std::runtime_error exception is thrown.
 - **Invariants:** Data format integrity during the write process.
 
-##### IProcessors (Input Processors)
+##### Processors
 - **Preconditions:** Non-standard format Table provided that should match with selected IProcessor.
 - **Postconditions:** Table transformed to standard format, or an std::invalid_argument exception is thrown.
 - **Invariants:** Logical structure of data maintained, no data loss.
 
-##### OProcessors (Output Processors)
-- **Preconditions:** Standard Table format provided for output.
-- **Postconditions:** Table transformed to desired output format.
-- **Invariants:** Integrity of Table's logical structure maintained, adapted to output requirements without loss.

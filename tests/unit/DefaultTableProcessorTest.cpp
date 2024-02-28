@@ -3,27 +3,28 @@
 #include <algorithm>
 
 #include "Table.hpp"
-#include "InputProcessors/DefaultTableProcessor.hpp"
+#include "Processors/DefaultTableProcessor.hpp"
 
 namespace SageParserTest
 {
+    using namespace SageParser;
 
     class DefaultTableProcessorTest : public ::testing::Test
     {
     protected:
-        std::shared_ptr<SageParser::Table> inputTable;
-        std::shared_ptr<SageParser::DefaultTableProcessor> processor;
+        std::shared_ptr<Table> inputTable;
+        std::shared_ptr<DefaultTableProcessor> processor;
 
         void SetUp() override
         {
-            inputTable = std::make_shared<SageParser::Table>();
+            inputTable = std::make_shared<Table>();
             (*inputTable)["NAME"] = {"Alice", "Bob"};
             (*inputTable)["Count"] = {"10", "20"};
             (*inputTable)["UNIT"] = {"шт", "бочк"};
             (*inputTable)["price"] = {"100", "200"};
             (*inputTable)["IrrelevantColumn"] = {"irrelevant1", "irrelevant2"};
 
-            processor = std::make_shared<SageParser::DefaultTableProcessor>();
+            processor = std::make_shared<DefaultTableProcessor>();
         }
     };
 

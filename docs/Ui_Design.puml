@@ -49,7 +49,7 @@ package SageParserLib {
         + write(shared_ptr<Table>) : void
     }
 
-    interface AbstractProcessor {
+    interface IProcessor {
         + process(shared_ptr<Table>) : shared_ptr<Table>
     }
 

@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include "AbstractProcessor.hpp"
+#include "IProcessor.hpp"
 
 namespace SageParser
 {
@@ -16,7 +16,7 @@ namespace SageParser
         const auto IMPORT = "import";
     }
 
-    class XmlProcessor : public AbstractProcessor
+    class XmlProcessor : public IProcessor
     {
     public:
         explicit XmlProcessor();

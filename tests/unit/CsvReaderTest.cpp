@@ -5,6 +5,7 @@
 
 namespace SageParserTest
 {
+    using namespace SageParser;
 
     class CsvReaderTest : public ::testing::Test
     {
@@ -32,7 +33,7 @@ namespace SageParserTest
 
     TEST_F(CsvReaderTest, ReadTableFromFile)
     {
-        SageParser::CsvReader reader(tempFilePath, delimiter);
+        CsvReader reader(tempFilePath, delimiter);
         auto table = reader.read();
 
         // Check that the table is not null
@@ -49,7 +50,7 @@ namespace SageParserTest
         // Check the number of entries in each column
         for (const auto &columnName : columnNames)
         {
-            EXPECT_EQ(table->at(columnName).size(), 2) << "Column '" << columnName << "' should have exactly 2 entries.";
+            EXPECT_EQ((*table)[columnName].size(), 2) << "Column '" << columnName << "' should have exactly 2 entries.";
         }
 
         // Check the content of the table
@@ -62,7 +63,7 @@ namespace SageParserTest
     TEST_F(CsvReaderTest, ThrowWhenFileNotFound)
     {
         std::filesystem::path invalidPath = "nonexistent.csv";
-        SageParser::CsvReader reader(invalidPath, delimiter);
+        CsvReader reader(invalidPath, delimiter);
 
         EXPECT_THROW(
             {

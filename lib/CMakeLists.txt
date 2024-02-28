@@ -5,11 +5,17 @@ find_package(rapidcsv REQUIRED)
 find_package(pugixml REQUIRED)
 
 set(LIB_SOURCES
-    ${LIB_SOURCES_DIR}/InputProcessors/DefaultTableProcessor.cpp
+    ${LIB_SOURCES_DIR}/ParserBuilder.cpp
+    ${LIB_SOURCES_DIR}/Table.cpp
 
+    # Processors
+    ${LIB_SOURCES_DIR}/Processors/DefaultTableProcessor.cpp
+
+    # Readers
     ${LIB_SOURCES_DIR}/Readers/CsvReader.cpp
     # ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp
 
+    # Writers
     ${LIB_SOURCES_DIR}/Writers/CsvWriter.cpp
     # ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
 )

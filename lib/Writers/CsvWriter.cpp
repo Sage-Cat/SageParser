@@ -1,10 +1,10 @@
 #include "CsvWriter.hpp"
-#include <fstream>
 #include <stdexcept>
 #include <ranges>
 
 namespace SageParser
 {
+
     void CsvWriter::write(const std::shared_ptr<Table> &table)
     {
         if (filePath_.empty())
@@ -20,44 +20,32 @@ namespace SageParser
 
         if (table->empty())
         {
-            return;
+            return; // Early exit if table is empty
         }
 
-        // Utilize ranges to simplify loop operations
-        const auto &columnNames = table->columnNames();
+        // Use getOrder to respect the column order
+        const auto &columnOrder = table->getOrder();
         bool isFirstColumn = true;
-        for (const auto &columnName : columnNames)
+        for (const auto &columnName : columnOrder)
         {
-            if (!isFirstColumn)
-                file << m_delimiter;
-            if (m_useQuotes)
-                file << '"' << columnName << '"';
-            else
-                file << columnName;
+            file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << columnName << (m_useQuotes ? "\"" : "");
             isFirstColumn = false;
         }
         file << '\n';
 
-        size_t numRows = table->begin()->second.size();
-
+        // Assuming all columns have the same number of rows
+        size_t numRows = table->data().begin()->second.size();
         for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
         {
             isFirstColumn = true;
-            for (const auto &[columnName, columnData] : *table)
+            for (const auto &columnName : columnOrder)
             {
-                if (!isFirstColumn)
-                    file << m_delimiter;
-                if (rowIndex < columnData.size())
-                {
-                    auto &value = columnData[rowIndex];
-                    if (m_useQuotes)
-                        file << '"' << value << '"';
-                    else
-                        file << value;
-                }
+                const auto &columnData = table->data().at(columnName);
+                file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << (rowIndex < columnData.size() ? columnData[rowIndex] : "") << (m_useQuotes ? "\"" : "");
                 isFirstColumn = false;
             }
             file << '\n';
         }
     }
-}
+
+} // namespace SageParser

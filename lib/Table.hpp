@@ -13,33 +13,20 @@ namespace SageParser
     using ColumnName = std::string;
     using Column = std::vector<std::string>;
 
-    class Table : public std::unordered_map<ColumnName, Column>
+    class Table
     {
     public:
-        // Function to get all column names as a vector
-        std::vector<ColumnName> columnNames() const
-        {
-            std::vector<ColumnName> names;
-            for (const auto &[key, _] : *this)
-            {
-                names.push_back(key);
-            }
-            return names;
-        }
+        Column &operator[](const ColumnName &columnName);
+        [[nodiscard]] std::unordered_map<ColumnName, Column> &data();
+        [[nodiscard]] std::vector<ColumnName> columnNames() const;
+        void renameColumn(const ColumnName &oldName, const ColumnName &newName);
+        [[nodiscard]] const std::vector<ColumnName> &getOrder() const;
+        [[nodiscard]] bool empty() const;
+        bool erase(const ColumnName &columnName);
 
-        // Function to rename a column in a table
-        void renameColumn(const ColumnName &oldName, const ColumnName &newName)
-        {
-            if (oldName == newName)
-                return;
-
-            auto it = find(oldName);
-            if (it == end())
-                throw std::invalid_argument("renameColumn error: Column name '" + oldName + "' does not exist.");
-
-            (*this)[newName] = std::move(it->second);
-            erase(it);
-        }
+    private:
+        std::unordered_map<ColumnName, Column> data_;
+        std::vector<ColumnName> order_;
     };
 
 } // namespace SageParser
