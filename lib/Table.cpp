@@ -1,70 +1,173 @@
 #include "Table.hpp"
 #include <algorithm>
-#include <utility>
 
 namespace SageParser
 {
 
-    Column &Table::operator[](const ColumnName &columnName)
+    std::string &Table::at(int row, int column)
     {
-        auto [iter, inserted] = data_.try_emplace(columnName);
-        if (inserted)
+        ensureRowExists(row);
+        ensureColumnExists(column);
+        return data_[row][column];
+    }
+
+    std::string &Table::at(int row, const std::string &columnName)
+    {
+        int columnIndex = getColumnIndex(columnName);
+        return at(row, columnIndex);
+    }
+
+    void Table::addRow(const std::map<std::string, std::string> &rowData)
+    {
+        std::vector<std::string> newRow(indexesColumnNames_.size(), "");
+        for (const auto &[columnName, value] : rowData)
         {
-            order_.push_back(columnName);
+            int columnIndex = getColumnIndex(columnName);
+            newRow[columnIndex] = value;
         }
-        return iter->second;
+        data_.push_back(std::move(newRow));
     }
 
-    std::unordered_map<ColumnName, Column> &Table::data()
+    void Table::addRow(const std::map<int, std::string> &rowData)
     {
-        return data_;
-    }
-
-    std::vector<ColumnName> Table::columnNames() const
-    {
-        std::vector<ColumnName> names;
-        for (const auto &[key, _] : data_)
+        std::vector<std::string> newRow(indexesColumnNames_.size(), "");
+        for (const auto &[columnIndex, value] : rowData)
         {
-            names.push_back(key);
+            ensureColumnExists(columnIndex);
+            newRow[columnIndex] = value;
         }
-        return names;
+        data_.push_back(std::move(newRow));
     }
 
-    void Table::renameColumn(const ColumnName &oldName, const ColumnName &newName)
+    void Table::addColumn(const std::string &columnName)
     {
-        if (oldName == newName)
-            return;
-
-        auto it = data_.find(oldName);
-        if (it == data_.end())
-            throw std::invalid_argument("renameColumn error: Column name '" + oldName + "' does not exist.");
-
-        data_[newName] = std::move(it->second);
-        data_.erase(it);
-        std::ranges::replace(order_, oldName, newName);
-    }
-
-    const std::vector<ColumnName> &Table::getOrder() const
-    {
-        return order_;
-    }
-
-    bool Table::empty() const
-    {
-        return data_.empty();
-    }
-
-    bool Table::erase(const ColumnName &columnName)
-    {
-        auto it = data_.find(columnName);
-        if (it != data_.end())
+        updateColumnMappings(columnName);
+        for (auto &row : data_)
         {
-            data_.erase(it);
-            auto orderIt = std::remove(order_.begin(), order_.end(), columnName);
-            order_.erase(orderIt, order_.end());
-            return true;
+            row.push_back("");
         }
-        return false;
+    }
+
+    std::map<int, std::string> Table::columnNamesMap() const
+    {
+        return indexesColumnNames_;
+    }
+
+    void Table::renameColumn(int columnIndex, const std::string &newName)
+    {
+        if (indexesColumnNames_.find(columnIndex) != indexesColumnNames_.end())
+        {
+            columnNameIndexes_.erase(indexesColumnNames_[columnIndex]);
+            indexesColumnNames_[columnIndex] = newName;
+            columnNameIndexes_[newName] = columnIndex;
+        }
+    }
+
+    void Table::reserve(size_t rows, size_t columns)
+    {
+        data_.reserve(rows);
+        for (auto &row : data_)
+        {
+            row.reserve(columns);
+        }
+        while (data_.size() < rows)
+        {
+            data_.emplace_back(columns, "");
+        }
+    }
+
+    size_t Table::rowCount() const
+    {
+        return data_.size();
+    }
+
+    size_t Table::columnCount() const
+    {
+        return indexesColumnNames_.size();
+    }
+
+    void Table::eraseColumn(int columnIndex)
+    {
+        // Check if column exists
+        if (!indexesColumnNames_.contains(columnIndex))
+        {
+            throw std::out_of_range("Column index out of range for erase");
+        }
+
+        // Erase column from each row
+        for (auto &row : data_)
+        {
+            if (columnIndex < row.size())
+            {
+                row.erase(row.begin() + columnIndex);
+            }
+        }
+
+        // Remove column from index mappings
+        std::string erasedColumnName = indexesColumnNames_[columnIndex];
+        indexesColumnNames_.erase(columnIndex);
+        columnNameIndexes_.erase(erasedColumnName);
+
+        // Adjust the mapping for columns that come after the erased one
+        std::map<int, std::string> newColumnIndexes;
+        std::map<std::string, int> newColumnNameIndexes;
+        int newIndex = 0;
+        for (const auto &[index, name] : indexesColumnNames_)
+        {
+            if (index > columnIndex)
+            {
+                newColumnIndexes[newIndex] = name;
+                newColumnNameIndexes[name] = newIndex;
+            }
+            else
+            {
+                newColumnIndexes[index] = name;
+                newColumnNameIndexes[name] = index;
+            }
+            newIndex++;
+        }
+
+        indexesColumnNames_ = std::move(newColumnIndexes);
+        columnNameIndexes_ = std::move(newColumnNameIndexes);
+    }
+
+    void Table::ensureColumnExists(int columnIndex)
+    {
+        if (columnIndex >= static_cast<int>(data_.empty() ? 0 : data_[0].size()))
+        {
+            throw std::out_of_range("Column index out of range");
+        }
+    }
+
+    void Table::ensureRowExists(int rowIndex)
+    {
+        if (rowIndex >= static_cast<int>(data_.size()))
+        {
+            throw std::out_of_range("Row index out of range");
+        }
+    }
+
+    int Table::getColumnIndex(const std::string &columnName) const
+    {
+        auto it = columnNameIndexes_.find(columnName);
+        if (it != columnNameIndexes_.end())
+        {
+            return it->second;
+        }
+        else
+        {
+            throw std::invalid_argument("Column name does not exist");
+        }
+    }
+
+    void Table::updateColumnMappings(const std::string &columnName)
+    {
+        if (columnNameIndexes_.find(columnName) == columnNameIndexes_.end())
+        {
+            int newIndex = indexesColumnNames_.size();
+            indexesColumnNames_[newIndex] = columnName;
+            columnNameIndexes_[columnName] = newIndex;
+        }
     }
 
 } // namespace SageParser

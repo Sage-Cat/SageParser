@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <algorithm>
 
-#include "Table.hpp"
 #include "Processors/DefaultTableProcessor.hpp"
 
 namespace SageParserTest
@@ -18,11 +18,17 @@ namespace SageParserTest
         void SetUp() override
         {
             inputTable = std::make_shared<Table>();
-            (*inputTable)["NAME"] = {"Alice", "Bob"};
-            (*inputTable)["Count"] = {"10", "20"};
-            (*inputTable)["UNIT"] = {"шт", "бочк"};
-            (*inputTable)["price"] = {"100", "200"};
-            (*inputTable)["IrrelevantColumn"] = {"irrelevant1", "irrelevant2"};
+
+            // Add columns
+            inputTable->addColumn("NAME");
+            inputTable->addColumn("Count");
+            inputTable->addColumn("UNIT");
+            inputTable->addColumn("price");
+            inputTable->addColumn("IrrelevantColumn");
+
+            // Add rows
+            inputTable->addRow({{"NAME", "Alice"}, {"Count", "10"}, {"UNIT", "шт"}, {"price", "100"}, {"IrrelevantColumn", "irrelevant1"}});
+            inputTable->addRow({{"NAME", "Bob"}, {"Count", "20"}, {"UNIT", "бочк"}, {"price", "200"}, {"IrrelevantColumn", "irrelevant2"}});
 
             processor = std::make_shared<DefaultTableProcessor>();
         }
@@ -31,10 +37,17 @@ namespace SageParserTest
     TEST_F(DefaultTableProcessorTest, RemoveUnrecognizedColumn)
     {
         auto processedTable = processor->process(inputTable);
-        auto columnNames = processedTable->columnNames();
+        auto columnNamesMap = processedTable->columnNamesMap();
 
-        // IrrelevantColumn had to be removed
-        auto found = std::ranges::find(columnNames, "IrrelevantColumn") != columnNames.end();
+        // Convert columnNames map to vector of string for easier searching
+        std::vector<std::string> columnNames;
+        for (const auto &[index, name] : columnNamesMap)
+        {
+            columnNames.push_back(name);
+        }
+
+        // Check for IrrelevantColumn
+        auto found = std::find(columnNames.begin(), columnNames.end(), "IrrelevantColumn") != columnNames.end();
         EXPECT_FALSE(found) << "Irrelevant columns should be removed.";
     }
 
@@ -42,12 +55,22 @@ namespace SageParserTest
     {
         auto processedTable = processor->process(inputTable);
 
-        std::vector<std::string> expectedNames = {"name", "count", "unit", "price"};
-        auto columnNames = processedTable->columnNames();
+        // Convert columnNames map to vector of string for easier searching
+        std::vector<std::string> columnNames;
+        auto columnNamesMap = processedTable->columnNamesMap();
+        for (const auto &[index, name] : columnNamesMap)
+        {
+            columnNames.push_back(name);
+        }
 
+        std::vector<std::string> expectedNames{
+            Default::ColumnNames::NAME.data(),
+            Default::ColumnNames::COUNT.data(),
+            Default::ColumnNames::UNIT.data(),
+            Default::ColumnNames::PRICE.data()};
         for (const auto &expectedName : expectedNames)
         {
-            auto found = std::ranges::find(columnNames, expectedName) != columnNames.end();
+            auto found = std::find(columnNames.begin(), columnNames.end(), expectedName) != columnNames.end();
             EXPECT_TRUE(found) << "Expected column " << expectedName << " not found.";
         }
     }
@@ -56,9 +79,14 @@ namespace SageParserTest
     {
         auto processedTable = processor->process(inputTable);
 
-        const auto &unitColumn = (*processedTable)["unit"];
-        EXPECT_EQ(unitColumn[0], "шт.") << "Unit value should be standardized to 'шт.'";
-        EXPECT_EQ(unitColumn[1], "Бочка") << "Unit value should be standardized to 'Бочка'";
+        EXPECT_EQ(
+            processedTable->at(0, Default::ColumnNames::UNIT.data()),
+            Default::Units::PIECE)
+            << "Unit value should be standardized to 'шт.'";
+        EXPECT_EQ(
+            processedTable->at(1, Default::ColumnNames::UNIT.data()),
+            Default::Units::BARREL)
+            << "Unit value should be standardized to 'Бочка'";
     }
 
 } // namespace SageParserTest

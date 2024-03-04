@@ -1,4 +1,5 @@
 #include "CsvWriter.hpp"
+
 #include <stdexcept>
 #include <ranges>
 
@@ -18,31 +19,34 @@ namespace SageParser
             throw std::runtime_error("Could not open file for writing at " + filePath_.string());
         }
 
-        if (table->empty())
-        {
-            return; // Early exit if table is empty
-        }
+        if (table->rowCount() == 0)
+            return;
 
-        // Use getOrder to respect the column order
-        const auto &columnOrder = table->getOrder();
-        bool isFirstColumn = true;
-        for (const auto &columnName : columnOrder)
+        // Write column headers
+        auto columnNamesMap = table->columnNamesMap();
+        for (auto it = columnNamesMap.begin(); it != columnNamesMap.end(); ++it)
         {
-            file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << columnName << (m_useQuotes ? "\"" : "");
-            isFirstColumn = false;
+            if (it != columnNamesMap.begin())
+            {
+                file << m_delimiter;
+            }
+            file << (m_useQuotes ? "\"" : "") << it->second << (m_useQuotes ? "\"" : "");
         }
         file << '\n';
 
-        // Assuming all columns have the same number of rows
-        size_t numRows = table->data().begin()->second.size();
+        // Write row data
+        size_t numRows = table->rowCount();
+        size_t numColumns = table->columnCount();
         for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
         {
-            isFirstColumn = true;
-            for (const auto &columnName : columnOrder)
+            for (size_t columnIndex = 0; columnIndex < numColumns; ++columnIndex)
             {
-                const auto &columnData = table->data().at(columnName);
-                file << (!isFirstColumn ? std::string{m_delimiter} : "") << (m_useQuotes ? "\"" : "") << (rowIndex < columnData.size() ? columnData[rowIndex] : "") << (m_useQuotes ? "\"" : "");
-                isFirstColumn = false;
+                if (columnIndex > 0)
+                {
+                    file << m_delimiter;
+                }
+                std::string cellData = table->at(rowIndex, columnIndex);
+                file << (m_useQuotes ? "\"" : "") << cellData << (m_useQuotes ? "\"" : "");
             }
             file << '\n';
         }

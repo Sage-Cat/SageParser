@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
+
 #include <fstream>
+#include <filesystem>
 
 #include "Writers/CsvWriter.hpp"
-#include "Table.hpp" // Make sure to include your Table class
 
-#include "Parsing.hpp" // Ensure parseCsvLine returns std::vector<std::string>
+#include "Parsing.hpp"
 
 namespace SageParserTest
 {
@@ -20,9 +21,14 @@ namespace SageParserTest
         {
             tempFilePath = std::filesystem::temp_directory_path() / "output_test.csv";
             table = std::make_shared<Table>();
-            // Ensure columns are added in the order you wish to test for
-            (*table)["ID"] = {"1", "2"};
-            (*table)["Name"] = {"John Doe", "Jane Doe"};
+
+            // Add columns to the table
+            table->addColumn("ID");
+            table->addColumn("Name");
+
+            // Add rows to the table
+            table->addRow({{"ID", "1"}, {"Name", "John Doe"}});
+            table->addRow({{"ID", "2"}, {"Name", "Jane Doe"}});
         }
 
         void TearDown() override
@@ -72,4 +78,5 @@ namespace SageParserTest
             EXPECT_EQ(secondRow[i], expectedSecondRow[i]) << "Data in second row does not match at index " << i;
         }
     }
-}
+
+} // namespace SageParserTest

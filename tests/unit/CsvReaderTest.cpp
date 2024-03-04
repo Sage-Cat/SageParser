@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+
 #include <fstream>
+#include <filesystem>
 
 #include "Readers/CsvReader.hpp"
 
@@ -15,7 +17,6 @@ namespace SageParserTest
 
         void SetUp() override
         {
-            // Create a temporary file path
             tempFilePath = std::filesystem::temp_directory_path() / "test.csv";
 
             // Setup a minimal CSV content
@@ -26,7 +27,6 @@ namespace SageParserTest
 
         void TearDown() override
         {
-            // Clean up the temporary file
             std::filesystem::remove(tempFilePath);
         }
     };
@@ -39,25 +39,25 @@ namespace SageParserTest
         // Check that the table is not null
         ASSERT_NE(table, nullptr);
 
-        // Check the number of columns is correct
-        auto columnNames = table->columnNames();
-        EXPECT_EQ(columnNames.size(), 2) << "Table should have exactly 2 columns.";
+        // Check the number of columns and rows is correct
+        EXPECT_EQ(table->columnCount(), 2) << "Table should have exactly 2 columns.";
+        EXPECT_EQ(table->rowCount(), 2) << "Table should have exactly 2 rows.";
 
         // Check that the column names are correct
-        EXPECT_TRUE(std::find(columnNames.begin(), columnNames.end(), "ID") != columnNames.end()) << "Column 'ID' not found.";
-        EXPECT_TRUE(std::find(columnNames.begin(), columnNames.end(), "Name") != columnNames.end()) << "Column 'Name' not found.";
-
-        // Check the number of entries in each column
-        for (const auto &columnName : columnNames)
+        auto columnNamesMap = table->columnNamesMap();
+        std::vector<std::string> columnNames;
+        for (const auto &[index, name] : columnNamesMap)
         {
-            EXPECT_EQ((*table)[columnName].size(), 2) << "Column '" << columnName << "' should have exactly 2 entries.";
+            columnNames.push_back(name);
         }
+        EXPECT_NE(std::find(columnNames.begin(), columnNames.end(), "ID"), columnNames.end()) << "Column 'ID' not found.";
+        EXPECT_NE(std::find(columnNames.begin(), columnNames.end(), "Name"), columnNames.end()) << "Column 'Name' not found.";
 
         // Check the content of the table
-        EXPECT_EQ((*table)["ID"][0], "1") << "First entry of 'ID' column should be '1'.";
-        EXPECT_EQ((*table)["ID"][1], "2") << "Second entry of 'ID' column should be '2'.";
-        EXPECT_EQ((*table)["Name"][0], "John Doe") << "First entry of 'Name' column should be 'John Doe'.";
-        EXPECT_EQ((*table)["Name"][1], "Jane Doe") << "Second entry of 'Name' column should be 'Jane Doe'.";
+        EXPECT_EQ(table->at(0, "ID"), "1") << "First entry of 'ID' column should be '1'.";
+        EXPECT_EQ(table->at(1, "ID"), "2") << "Second entry of 'ID' column should be '2'.";
+        EXPECT_EQ(table->at(0, "Name"), "John Doe") << "First entry of 'Name' column should be 'John Doe'.";
+        EXPECT_EQ(table->at(1, "Name"), "Jane Doe") << "Second entry of 'Name' column should be 'Jane Doe'.";
     }
 
     TEST_F(CsvReaderTest, ThrowWhenFileNotFound)
@@ -71,4 +71,5 @@ namespace SageParserTest
             },
             std::invalid_argument);
     }
-}
+
+} // namespace SageParserTest

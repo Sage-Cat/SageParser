@@ -69,32 +69,39 @@ namespace SageParser
         unitAliases_ = alias_map(UNIT_ALIASES.begin(), UNIT_ALIASES.end());
     }
 
-    std::shared_ptr<Table> DefaultTableProcessor::process(const std::shared_ptr<Table> &table)
+    std::shared_ptr<SageParser::Table> DefaultTableProcessor::process(const std::shared_ptr<SageParser::Table> &table)
     {
-        auto new_table = std::make_shared<Table>(*table);
-        auto &table_data = new_table->data();
+        auto new_table = std::make_shared<SageParser::Table>(*table);
 
-        // Rename columnNames with default names. Remove columns that is not known
-        for (const auto &columnName : new_table->columnNames())
+        // Translate columns to default and remove unrecognized columns
+        auto columnNames = new_table->columnNamesMap();
+        for (const auto &[index, columnName] : columnNames)
         {
             if (auto it = columnNamesAliases_.find(columnName); it != columnNamesAliases_.end())
             {
                 if (columnName != it->second)
-                    new_table->renameColumn(columnName, it->second);
+                {
+                    new_table->renameColumn(index, it->second);
+                }
             }
             else
             {
-                new_table->erase(columnName);
+                new_table->eraseColumn(index);
             }
         }
 
-        // Rename unit values with default names. Skip units that is not known
-        if (auto it = table_data.find(Default::ColumnNames::UNIT.data()); it != table_data.end())
+        // Translate units to default values, skip unrecognized
+        if (int unitColumnIndex = new_table->getColumnIndex(Default::ColumnNames::UNIT.data()); unitColumnIndex != -1)
         {
-            auto &unitColumn = it->second;
-            for (auto &unit : unitColumn)
+            size_t numRows = new_table->rowCount(); // Assumes rowCount method is implemented to get the number of rows
+            for (size_t row = 0; row < numRows; ++row)
+            {
+                std::string &unit = new_table->at(row, unitColumnIndex);
                 if (auto aliasIt = unitAliases_.find(unit); aliasIt != unitAliases_.end())
+                {
                     unit = aliasIt->second;
+                }
+            }
         }
 
         return new_table;
