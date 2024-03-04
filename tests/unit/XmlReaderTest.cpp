@@ -3,25 +3,33 @@
 #include <fstream>
 #include <filesystem>
 
-#include "Readers/CsvReader.hpp"
+#include "Readers/XmlReader.hpp"
 
 namespace SageParserTest
 {
     using namespace SageParser;
 
-    class CsvReaderTest : public ::testing::Test
+    class XmlReaderTest : public ::testing::Test
     {
     protected:
         std::filesystem::path tempFilePath;
-        char delimiter = ',';
 
         void SetUp() override
         {
-            tempFilePath = std::filesystem::temp_directory_path() / "test.csv";
+            tempFilePath = std::filesystem::temp_directory_path() / "test.xml";
 
-            // Setup a minimal CSV content
+            // Setup a minimal XML content
             std::ofstream ofs(tempFilePath);
-            ofs << "ID,Name\n1,John Doe\n2,Jane Doe";
+            ofs << R"(<Root>
+                    <Row>
+                        <ID>1</ID>
+                        <Name>John Doe</Name>
+                    </Row>
+                    <Row>
+                        <ID>2</ID>
+                        <Name>Jane Doe</Name>
+                    </Row>
+                  </Root>)";
             ofs.close();
         }
 
@@ -31,9 +39,9 @@ namespace SageParserTest
         }
     };
 
-    TEST_F(CsvReaderTest, ReadTableFromFile)
+    TEST_F(XmlReaderTest, ReadTableFromFile)
     {
-        CsvReader reader(tempFilePath, delimiter);
+        XmlReader reader(tempFilePath);
         auto table = reader.read();
 
         // Check that the table is not null
@@ -45,13 +53,10 @@ namespace SageParserTest
 
         // Check that the column names are correct
         auto columnNamesMap = table->columnNamesMap();
-        std::vector<std::string> columnNames;
-        for (const auto &[index, name] : columnNamesMap)
-        {
-            columnNames.push_back(name);
-        }
-        EXPECT_NE(std::find(columnNames.begin(), columnNames.end(), "ID"), columnNames.end()) << "Column 'ID' not found.";
-        EXPECT_NE(std::find(columnNames.begin(), columnNames.end(), "Name"), columnNames.end()) << "Column 'Name' not found.";
+        EXPECT_NE(columnNamesMap.find(0), columnNamesMap.end()) << "Column 'ID' not found.";
+        EXPECT_NE(columnNamesMap.find(1), columnNamesMap.end()) << "Column 'Name' not found.";
+        EXPECT_EQ(columnNamesMap.at(0), "ID") << "First column should be 'ID'.";
+        EXPECT_EQ(columnNamesMap.at(1), "Name") << "Second column should be 'Name'.";
 
         // Check the content of the table
         EXPECT_EQ(table->at(0, "ID"), "1") << "First entry of 'ID' column should be '1'.";
@@ -60,10 +65,10 @@ namespace SageParserTest
         EXPECT_EQ(table->at(1, "Name"), "Jane Doe") << "Second entry of 'Name' column should be 'Jane Doe'.";
     }
 
-    TEST_F(CsvReaderTest, ThrowWhenFileNotFound)
+    TEST_F(XmlReaderTest, ThrowWhenFileNotFound)
     {
-        std::filesystem::path invalidPath = "nonexistent.csv";
-        CsvReader reader(invalidPath, delimiter);
+        std::filesystem::path invalidPath = "nonexistent.xml";
+        XmlReader reader(invalidPath);
 
         EXPECT_THROW(
             {

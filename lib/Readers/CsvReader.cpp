@@ -7,17 +7,17 @@ namespace SageParser {
 
     std::shared_ptr<Table> CsvReader::read()
     {
-        if (filePath.empty())
+        if (filePath_.empty())
         {
-            throw std::invalid_argument("File path is empty");
+            throw std::runtime_error("File path is empty");
         }
 
-        if (!std::filesystem::exists(filePath) || !std::filesystem::is_regular_file(filePath))
+        if (!std::filesystem::exists(filePath_) || !std::filesystem::is_regular_file(filePath_))
         {
-            throw std::invalid_argument("Invalid file path provided.");
+            throw std::runtime_error("Invalid file path provided.");
         }
 
-        rapidcsv::Document doc(filePath.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
+        rapidcsv::Document doc(filePath_.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
 
         auto table = std::make_shared<Table>();
 

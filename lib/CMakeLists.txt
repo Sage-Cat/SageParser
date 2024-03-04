@@ -13,11 +13,11 @@ set(LIB_SOURCES
 
     # Readers
     ${LIB_SOURCES_DIR}/Readers/CsvReader.cpp
-    # ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp
+    ${LIB_SOURCES_DIR}/Readers/XmlReader.cpp
 
     # Writers
     ${LIB_SOURCES_DIR}/Writers/CsvWriter.cpp
-    # ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
+    ${LIB_SOURCES_DIR}/Writers/XmlWriter.cpp
 )
 
 add_library(SageParserLib ${LIB_SOURCES})

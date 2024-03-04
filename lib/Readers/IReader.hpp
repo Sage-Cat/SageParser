@@ -14,7 +14,7 @@ namespace SageParser
     class IReader
     {
     public:
-        explicit IReader(const std::filesystem::path &new_path) : filePath(new_path) {}
+        explicit IReader(const std::filesystem::path &new_path) : filePath_(new_path) {}
         virtual ~IReader() = default;
 
         /**
@@ -24,7 +24,7 @@ namespace SageParser
         virtual std::shared_ptr<Table> read() = 0;
 
     protected:
-        std::filesystem::path filePath;
+        std::filesystem::path filePath_;
     };
 
 } // namespace SageParser

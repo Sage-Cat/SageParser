@@ -1,4 +1,5 @@
 find_package(GTest REQUIRED)
+find_package(pugixml REQUIRED)
 
 set(UNIT_TESTS_DIR "${TEST_SOURCES_DIR}/unit")
 set(COMPONENT_TESTS_DIR "${TEST_SOURCES_DIR}/component")

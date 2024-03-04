@@ -5,75 +5,49 @@
 
 namespace SageParser
 {
-    void XmlReader::setFilePath(const std::filesystem::path &new_path)
-    {
-        if (!std::filesystem::exists(new_path))
-            throw std::invalid_argument("File path- " + new_path.string() + " does not exist.");
-
-        if (!std::filesystem::is_regular_file(new_path))
-            throw std::invalid_argument("File path - " + new_path.string() + " pointing not to a file.");
-
-        m_filePath = new_path;
-    }
-
-    // checking the xml file for tabularity
-    bool XmlReader::checkXMLStructure(const pugi::xml_node &node, std::unordered_set<int> &structureSet, int level)
-    {
-        int childrenCount = std::distance(node.begin(), node.end());
-        structureSet.insert(childrenCount);
-        for (pugi::xml_node childNode : node.children())
-        {
-            if (!checkXMLStructure(childNode, structureSet, level + 1))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 
     std::shared_ptr<Table> XmlReader::read()
     {
-        int level = 0;
-        auto Table = std::make_shared<Table>();
         pugi::xml_document doc;
-        if (!doc.load_file(m_filePath.c_str()))
+        pugi::xml_parse_result result = doc.load_file(filePath_.c_str());
+
+        if (!result)
         {
-            std::cout << "Error loading XML file." << std::endl
-                      << std::endl;
+            std::cerr << "Error loading XML file: " << filePath_ << " - " << result.description() << std::endl;
+            throw std::runtime_error("Failed to load XML file.");
         }
-        if (!checkXMLStructure(doc, m_structureSet, level))
+
+        auto table = std::make_shared<Table>();
+        pugi::xml_node root = doc.document_element(); // Using document_element for clarity
+
+        // Using structured bindings (C++17 feature also useful in C++20 contexts)
+        bool columnsInitialized = false;
+        for (auto &rowNode : root.children())
         {
-            std::cout << "Invalid XML structure: Expected tabular data." << std::endl
-                      << std::endl;
-        }
-        pugi::xml_node items = doc.first_child();
-        try
-        {
-            auto item = doc.first_child();
-            for (item; item != PUGIXML_NULL; item = item.first_child())
+            if (!columnsInitialized)
             {
-                if (!item.first_child().first_child())
+                for (auto &columnNode : rowNode.children())
                 {
-                    item = item.parent();
-                    break;
+                    table->addColumn(columnNode.name());
                 }
+                columnsInitialized = true;
             }
-            for (item; item != PUGIXML_NULL; item = item.next_sibling())
+
+            std::map<std::string, std::string> rowData;
+            for (auto &columnNode : rowNode.children())
             {
-                std::vector<std::string> tmp;
-                for (pugi::xml_node columnNode : item.children())
-                {
-                    Table->columnNames.emplace_back(columnNode.name());
-                    tmp.push_back(columnNode.text().as_string());
-                }
-                Table->dataRows.emplace_back(tmp);
+                rowData[columnNode.name()] = columnNode.text().as_string();
             }
+            table->addRow(rowData);
         }
-        catch (const std::runtime_error &e)
+
+        if (!columnsInitialized)
         {
-            std::cerr << "Exception: " << e.what() << std::endl;
-            // Additional steps to handle the error, such as terminating the program or requesting another file.
+            std::cerr << "No data found in XML." << std::endl;
+            throw std::runtime_error("Empty XML structure.");
         }
-        return Table;
+
+        return table;
     }
-}
+
+} // namespace SageParser

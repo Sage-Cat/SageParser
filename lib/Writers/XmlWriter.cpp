@@ -8,57 +8,55 @@
 
 namespace SageParser
 {
-    void XmlWriter::setFilePath(const std::filesystem::path &new_path)
+    void XmlWriter::write(const std::shared_ptr<Table> &table)
     {
-        if (!std::filesystem::exists(new_path.parent_path()))
-            throw std::invalid_argument("Directory path - " + new_path.string() + " does not exist.");
+        // Pre-checks to validate the file path
+        auto parentPath = filePath_.parent_path();
+        if (!std::filesystem::exists(parentPath))
+        {
+            throw std::invalid_argument("Directory path - " + parentPath.string() + " does not exist.");
+        }
 
-        if (std::filesystem::is_directory(new_path))
-            throw std::invalid_argument("File path - " + new_path.string() + " is a directory.");
+        if (std::filesystem::is_directory(filePath_))
+        {
+            throw std::invalid_argument("File path - " + filePath_.string() + " is a directory, not a file.");
+        }
 
-        m_filePath = new_path;
-    }
-
-    void XmlWriter::write(const std::shared_ptr<Table> &Table)
-    {
-        // queue for columnNames
-        std::queue<std::string> q;
+        // Initialize XML document
         pugi::xml_document doc;
-        pugi::xml_node declaration = doc.prepend_child(pugi::node_declaration);
+        auto declaration = doc.prepend_child(pugi::node_declaration);
         declaration.append_attribute("version") = "1.0";
         declaration.append_attribute("encoding") = "UTF-8";
 
-        pugi::xml_node root = doc.append_child("Root");
-        for (const auto &columnName : Table->columnNames)
-        {
-            q.push(columnName);
-        }
+        auto root = doc.append_child("Root");
 
-        for (const auto &data : Table->dataRows)
+        // Fetch column names and row count from the table
+        const auto columnNamesMap = table->columnNamesMap();
+        const auto numRows = table->rowCount();
+        const auto numColumns = table->columnCount();
+
+        // Construct XML document
+        for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
         {
-            pugi::xml_node price = root.append_child("Price");
-            for (auto node_text : data)
+            auto rowNode = root.append_child("Row");
+            for (size_t columnIndex = 0; columnIndex < numColumns; ++columnIndex)
             {
-                if (!q.empty())
-                {
-                    auto node_name = q.front();
-                    q.pop();
-                    pugi::xml_node child1 = price.append_child(node_name.c_str());
-                    const char *text = node_text.c_str();
-                    child1.text().set(text);
-                }
-                else
-                    throw std::runtime_error("queue is empty");
+                std::string columnName = columnNamesMap.at(columnIndex); // Use .at() for safe access
+                std::string cellValue = table->at(rowIndex, columnIndex);
+
+                auto cellNode = rowNode.append_child(columnName.c_str());
+                cellNode.text().set(cellValue.c_str());
             }
         }
-        if (doc.save_file(m_filePath.c_str()))
+
+        // Save XML document to file
+        if (!doc.save_file(filePath_.c_str()))
         {
-            std::cout << "XML file was saved correctly" << std::endl;
+            std::cerr << "Failed to save XML file to " << filePath_ << std::endl;
         }
         else
         {
-            std::cerr << "failed to save xml file" << std::endl;
+            std::cout << "XML file was saved successfully to " << filePath_ << std::endl;
         }
     }
-
 }

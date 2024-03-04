@@ -7,13 +7,8 @@ namespace SageParser
     class XmlWriter : public IWriter
     {
     public:
-        XmlWriter() = default;
+        explicit XmlWriter(const std::filesystem::path &filePath) : IWriter(filePath) {}
 
-        void setFilePath(const std::filesystem::path &new_path) override;
-
-        void write(const std::shared_ptr<Table> &Table) override;
-
-    protected:
-        std::filesystem::path m_filePath;
+        void write(const std::shared_ptr<Table> &table) override;
     };
 }
