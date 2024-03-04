@@ -11,6 +11,7 @@ namespace SageParser
             std::pair{Default::ColumnNames::NAME, Default::ColumnNames::NAME},
             {"NAME", Default::ColumnNames::NAME},
             {"NAMEUKR", Default::ColumnNames::NAME},
+            {"NAIMUKR", Default::ColumnNames::NAME},
             {"Name", Default::ColumnNames::NAME},
 
             // count
@@ -25,6 +26,7 @@ namespace SageParser
             {"UNIT", Default::ColumnNames::UNIT},
             {"Unit", Default::ColumnNames::UNIT},
             {"uom_id", Default::ColumnNames::UNIT},
+            {"BAZED", Default::ColumnNames::UNIT},
 
             // price
             {Default::ColumnNames::PRICE, Default::ColumnNames::PRICE},
@@ -74,20 +76,33 @@ namespace SageParser
         auto new_table = std::make_shared<SageParser::Table>(*table);
 
         // Translate columns to default and remove unrecognized columns
-        auto columnNames = new_table->columnNamesMap();
-        for (const auto &[index, columnName] : columnNames)
         {
-            if (auto it = columnNamesAliases_.find(columnName); it != columnNamesAliases_.end())
+            auto columnNamesMap = new_table->columnNamesMap();
+
+            // Prepare operations
+            std::vector<std::pair<int, std::string>> renameOperations;
+            std::vector<int> eraseOperations;
+            for (const auto &[index, columnName] : columnNamesMap)
             {
-                if (columnName != it->second)
+                if (auto it = columnNamesAliases_.find(columnName); it != columnNamesAliases_.end())
                 {
-                    new_table->renameColumn(index, it->second);
+                    if (columnName != it->second)
+                        renameOperations.emplace_back(index, it->second);
+                }
+                else
+                {
+                    eraseOperations.push_back(index);
                 }
             }
-            else
-            {
+
+            // Apply rename operations
+            for (const auto &[index, newName] : renameOperations)
+                new_table->renameColumn(index, newName);
+
+            // Apply erase operations
+            std::ranges::sort(eraseOperations, std::greater<>());
+            for (int index : eraseOperations)
                 new_table->eraseColumn(index);
-            }
         }
 
         // Translate units to default values, skip unrecognized

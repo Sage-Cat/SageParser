@@ -151,13 +151,9 @@ namespace SageParser
     {
         auto it = columnNameIndexes_.find(columnName);
         if (it != columnNameIndexes_.end())
-        {
             return it->second;
-        }
         else
-        {
-            throw std::invalid_argument("Column name does not exist");
-        }
+            return -1;
     }
 
     void Table::updateColumnMappings(const std::string &columnName)

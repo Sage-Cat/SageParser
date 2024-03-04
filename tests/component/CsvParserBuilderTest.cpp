@@ -18,7 +18,6 @@ namespace SageParserTest
 
         void SetUp() override
         {
-            // Create and populate a temporary input CSV file
             tempInputPath_ = std::filesystem::temp_directory_path() / "temp_input.csv";
             std::ofstream inputFile(tempInputPath_);
             inputFile << "NAME,Count,Unit,PRICE\n";
