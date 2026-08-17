@@ -9,6 +9,7 @@ foreach(test_source ${COMPONENT_TESTS_SOURCES})
     add_executable(${test_name} ${test_source})
     target_include_directories(${test_name} PUBLIC ${LIB_SOURCES_DIR} ${UTILS_DIR})
     target_link_libraries(${test_name} SageParserLib pugixml::pugixml GTest::GTest GTest::Main)
+    target_compile_options(${test_name} PRIVATE -Wall -Wextra -Wpedantic)
     
     add_test(NAME COMPONENT_${test_name} COMMAND ${test_name})
 endforeach()

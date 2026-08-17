@@ -9,7 +9,7 @@ namespace SageParser
 {
 
     /**
-     * @brief Interface for file readers, supporting various formats like CSV, JSON, XML, and XLSX.
+     * @brief Interface for tabular file readers.
      */
     class IReader
     {

@@ -47,7 +47,7 @@ namespace SageParserTest
         void TearDown() override
         {
             std::filesystem::remove(tempInputPath_);
-            // std::filesystem::remove(tempOutputPath_);
+            std::filesystem::remove(tempOutputPath_);
         }
     };
 
@@ -81,7 +81,7 @@ namespace SageParserTest
         //           << xmlContent << "\n";
 
         size_t rowCount = 0;
-        for (auto &price : root.children("Row"))
+        for ([[maybe_unused]] const auto price : root.children("Row"))
             ++rowCount;
         EXPECT_EQ(rowCount, 1) << "Expected one processed record elements.";
 

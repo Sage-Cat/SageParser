@@ -1,117 +1,48 @@
 @startuml
+!pragma layout smetana
+skinparam componentStyle rectangle
+title SageParser library architecture
 
-package ui {
-    class SageParser
-    {
-        +init()
-    }
+class ParserBuilder {
+  +setReader(unique_ptr<IReader>)
+  +setProcessors(vector<unique_ptr<IProcessor>>)
+  +setWriter(unique_ptr<IWriter>)
+  +performOperation()
 }
 
-package lib {
-    class Table {
-        -columnNames : vector<string>
-        -dataRows : vector<Rows>
-    }
-
-    package Processors {
-        class DataProcessorFactory
-        {
-            createDataProcessor(docType) : IProcessor
-        }
-
-        class IProcessor {
-            +process(std::shared_ptr<Table>) : Table
-        }
-
-        class DefaultTableProcessor {
-            +process(std::shared_ptr<Table>) : Table
-        }
-
-        class OmegaInvoiceProcessor {
-            +process(std::shared_ptr<Table>) : Table
-        }
-
-        class BesuglayaInvoiceProcessor {
-            +process(std::shared_ptr<Table>) : Table
-        }
-
-        note "Many other processors are not shown here" as N1
-        N1 .. BesuglayaInvoiceProcessor
-        N1 .. OmegaInvoiceProcessor
-
-        DefaultTableProcessor -up-|> IProcessor
-        BesuglayaInvoiceProcessor -up-|> DefaultTableProcessor
-        OmegaInvoiceProcessor -up-|> DefaultTableProcessor
-    }
-
-    package Writers {
-
-        class WriterFactory {
-            createWriter(ReaderFileType) : IWriter
-        } 
-
-        interface IWriter {
-            +setFilePath(new_path)
-            +write(Table)
-        }
-
-        class CsvWriter {
-            +setFilePath(new_path)
-            +write(Table)
-        }
-
-        class XmlWriter {
-            +setFilePath(new_path)
-            +write(Table)
-        }
-
-        note "Many other writers not shown here" as N2
-        N2 .. CsvWriter
-        N2 .. XmlWriter
-
-        CsvWriter -up-|> IWriter
-        XmlWriter -up-|> IWriter
-    }
-
-    package Readers {
-        class ReaderFactory {
-            createReader(ReaderFileType) : IReader
-        } 
-
-        interface IReader {
-            +setFilePath(new_path)
-            +read(): std::shared_ptr<Table>
-        }
-
-        class CsvReader {
-            +setFilePath(new_path)
-            +read(): std::shared_ptr<Table>
-        }
-
-        class XlsxReader {
-            +setFilePath(new_path)
-            +read(): std::shared_ptr<Table>
-        }
-
-        note "Many other readers not shown here" as N3
-        N3 .. CsvReader
-        N3 .. XlsxReader
-
-        CsvReader -up-|> IReader
-        XlsxReader -up-|> IReader
-    }
-
-    Table -- IProcessor
+class Table {
+  +addColumn(name)
+  +addRow(values)
+  +at(row, column) : string
 }
 
+interface IReader {
+  +read() : shared_ptr<Table>
+}
+class CsvReader
+class XmlReader
 
-ReaderFactory --> IReader
-WriterFactory --> IWriter
-DataProcessorFactory --> IProcessor
+interface IProcessor {
+  +process(shared_ptr<Table>) : shared_ptr<Table>
+}
+class DefaultTableProcessor
 
-SageParser --> DataProcessorFactory
-SageParser --> WriterFactory
-SageParser --> ReaderFactory
-SageParser --> Table
+interface IWriter {
+  +write(shared_ptr<Table>)
+}
+class CsvWriter
+class XmlWriter
 
+CsvReader --|> IReader
+XmlReader --|> IReader
+DefaultTableProcessor --|> IProcessor
+CsvWriter --|> IWriter
+XmlWriter --|> IWriter
+
+ParserBuilder o-- IReader
+ParserBuilder o-- "0..*" IProcessor
+ParserBuilder o-- IWriter
+IReader --> Table : creates
+IProcessor --> Table : transforms copy
+IWriter --> Table : serializes
 @enduml

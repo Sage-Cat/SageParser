@@ -1,48 +1,44 @@
 # SageParser
 
-Application for parsing some spesific CSV, XML, JSON, XLSX documents
+SageParser is a small C++20 library for moving string-valued tabular data
+between CSV, XML, and an in-memory `Table`. A `ParserBuilder` can combine a
+reader, one or more processors, and a writer into a conversion pipeline.
 
-## Building 
+Current format support:
 
-Build conan:
+- CSV: header-based reading and writing, configurable delimiter, escaped
+  quotes, and quoted multiline fields.
+- XML: direct children of the document root are rows; their child elements are
+  fields. The writer emits `<Root><Row>...</Row></Root>`.
+
+XLSX and JSON are not implemented. The library performs no type inference, so
+all cell values remain strings. XML output requires at least one row and ASCII
+column names valid as XML element names. `DefaultTableProcessor` is
+domain-specific: it normalizes known inventory columns and removes unknown
+ones. The Qt UI sources are experimental and excluded from the default build.
+
+## Build and test
+
+Requirements: CMake 3.23+, Conan 2, and a C++20 compiler.
+
+```sh
+conan profile detect --force  # needed once per Conan installation
+conan install . --output-folder=build/conan --build=missing \
+  -s build_type=Release -s compiler.cppstd=20
+cmake -S . -B build \
+  -DCMAKE_TOOLCHAIN_FILE=build/conan/conan_toolchain.cmake \
+  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON
+cmake --build build
+ctest --test-dir build --output-on-failure
 ```
-conan install . --output-folder=build --build=missing
-```
 
-Configure cmake with conan deps:
-```
-cd build
-cmake .. --preset conan-debug
-```
+Conan supplies [rapidcsv](https://github.com/d99kris/rapidcsv),
+[pugixml](https://github.com/zeux/pugixml), and GoogleTest for the test build.
 
-Build project:
-```
-cmake --build .
-```
+## Design
 
-## Development
+![Library architecture](docs/Library_Design.png)
 
-### DbC (Design by Contract)
+The editable diagram source is [PlantUML](docs/Library_Design.puml).
 
-#### Library-Wide Contract
-- **Preconditions:** Ensure valid configurations for paths, file formats (xlsx, csv, xml, json), and necessary resources (memory, permissions).
-- **Postconditions:** Library initializes successfully, providing file reading/writing and data processing capabilities.
-- **Invariants:** Library maintains a valid state, ensuring data integrity and format compatibility.
-
-#### Contracts for Each Object Type
-
-##### Readers
-- **Preconditions:** File must exist, be accessible, and in a supported format.
-- **Postconditions:** File content is read into standard Table format, or an std::runtime_error exception is thrown.
-- **Invariants:** File integrity is maintained without altering content.
-
-##### Writers
-- **Preconditions:** Table in a valid state, output path accessible.
-- **Postconditions:** Data written to file in specified format or an std::runtime_error exception is thrown.
-- **Invariants:** Data format integrity during the write process.
-
-##### Processors
-- **Preconditions:** Non-standard format Table provided that should match with selected IProcessor.
-- **Postconditions:** Table transformed to standard format, or an std::invalid_argument exception is thrown.
-- **Invariants:** Logical structure of data maintained, no data loss.
-
+Licensed under the [GNU General Public License v3.0](LICENSE).

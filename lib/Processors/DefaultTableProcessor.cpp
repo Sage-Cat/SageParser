@@ -6,6 +6,14 @@ namespace SageParser
 {
     namespace
     {
+        alias_map makeAliasMap(const auto &aliases)
+        {
+            alias_map result;
+            for (const auto &[source, destination] : aliases)
+                result.emplace(std::string(source), std::string(destination));
+            return result;
+        }
+
         constexpr auto COLUMN_NAMES_ALIASES = std::to_array({
             // name
             std::pair{Default::ColumnNames::NAME, Default::ColumnNames::NAME},
@@ -67,8 +75,8 @@ namespace SageParser
 
     DefaultTableProcessor::DefaultTableProcessor()
     {
-        columnNamesAliases_ = alias_map(COLUMN_NAMES_ALIASES.begin(), COLUMN_NAMES_ALIASES.end());
-        unitAliases_ = alias_map(UNIT_ALIASES.begin(), UNIT_ALIASES.end());
+        columnNamesAliases_ = makeAliasMap(COLUMN_NAMES_ALIASES);
+        unitAliases_ = makeAliasMap(UNIT_ALIASES);
     }
 
     std::shared_ptr<SageParser::Table> DefaultTableProcessor::process(const std::shared_ptr<SageParser::Table> &table)

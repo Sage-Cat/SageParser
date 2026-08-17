@@ -30,10 +30,18 @@ namespace SageParser
 
         // Reading the table from file
         auto table = reader_->read();
+        if (!table)
+            throw std::runtime_error("ParserBuilder error: Reader returned a null table.");
 
         // Using cascade of preset processors
         for (auto &processor : processors_)
+        {
+            if (!processor)
+                throw std::runtime_error("ParserBuilder error: Processor is null.");
             table = processor->process(table);
+            if (!table)
+                throw std::runtime_error("ParserBuilder error: Processor returned a null table.");
+        }
 
         // Writing table to the file
         writer_->write(table);

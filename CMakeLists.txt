@@ -7,8 +7,7 @@ project(SageParser)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-enable_testing()
-option(BUILD_TESTING "Build the testing tree." ON)
+include(CTest)
 
 set(LIB_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(UI_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ui")
@@ -17,4 +16,6 @@ set(TEST_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tests")
 # SUBDIRS
 add_subdirectory(lib)
 # add_subdirectory(ui)
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()

@@ -1,55 +1,77 @@
 #include "CsvWriter.hpp"
 
 #include <stdexcept>
-#include <ranges>
+#include <string_view>
 
 namespace SageParser
 {
-
-    void CsvWriter::write(const std::shared_ptr<Table> &table)
+    namespace
     {
-        if (filePath_.empty())
+        void writeField(std::ostream &output, std::string_view value,
+                        char delimiter, bool alwaysQuote)
         {
-            throw std::invalid_argument("File path is empty");
-        }
+            const bool quote = alwaysQuote
+                || value.find(delimiter) != std::string_view::npos
+                || value.find('"') != std::string_view::npos
+                || value.find('\n') != std::string_view::npos
+                || value.find('\r') != std::string_view::npos;
 
-        std::ofstream file(filePath_, std::ios::out | std::ios::trunc);
-        if (!file.is_open())
-        {
-            throw std::runtime_error("Could not open file for writing at " + filePath_.string());
-        }
-
-        if (table->rowCount() == 0)
-            return;
-
-        // Write column headers
-        auto columnNamesMap = table->columnNamesMap();
-        for (auto it = columnNamesMap.begin(); it != columnNamesMap.end(); ++it)
-        {
-            if (it != columnNamesMap.begin())
+            if (!quote)
             {
-                file << m_delimiter;
+                output << value;
+                return;
             }
-            file << (m_useQuotes ? "\"" : "") << it->second << (m_useQuotes ? "\"" : "");
-        }
-        file << '\n';
 
-        // Write row data
-        size_t numRows = table->rowCount();
-        size_t numColumns = table->columnCount();
-        for (size_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
-        {
-            for (size_t columnIndex = 0; columnIndex < numColumns; ++columnIndex)
+            output.put('"');
+            for (const char character : value)
             {
-                if (columnIndex > 0)
-                {
-                    file << m_delimiter;
-                }
-                std::string cellData = table->at(rowIndex, columnIndex);
-                file << (m_useQuotes ? "\"" : "") << cellData << (m_useQuotes ? "\"" : "");
+                if (character == '"')
+                    output.put('"');
+                output.put(character);
             }
-            file << '\n';
+            output.put('"');
         }
     }
 
+    void CsvWriter::write(const std::shared_ptr<Table> &table)
+    {
+        if (!table)
+            throw std::invalid_argument("Table must not be null");
+        if (filePath_.empty())
+            throw std::invalid_argument("File path is empty");
+        if (table->columnCount() == 0 && table->rowCount() != 0)
+            throw std::invalid_argument("CSV output cannot represent rows without columns");
+
+        std::ofstream file(filePath_, std::ios::out | std::ios::trunc);
+        if (!file.is_open())
+            throw std::runtime_error("Could not open file for writing at " + filePath_.string());
+
+        const auto columnNames = table->columnNamesMap();
+        if (!columnNames.empty())
+        {
+            for (auto iterator = columnNames.begin(); iterator != columnNames.end(); ++iterator)
+            {
+                if (iterator != columnNames.begin())
+                    file.put(m_delimiter);
+                writeField(file, iterator->second, m_delimiter, m_useQuotes);
+            }
+            file.put('\n');
+        }
+
+        for (std::size_t row = 0; row < table->rowCount(); ++row)
+        {
+            for (std::size_t column = 0; column < table->columnCount(); ++column)
+            {
+                if (column != 0)
+                    file.put(m_delimiter);
+                writeField(file, table->at(static_cast<int>(row), static_cast<int>(column)),
+                           m_delimiter, m_useQuotes);
+            }
+            file.put('\n');
+        }
+
+        file.flush();
+        if (!file)
+            throw std::runtime_error("Failed while writing file at " + filePath_.string());
+    }
 } // namespace SageParser

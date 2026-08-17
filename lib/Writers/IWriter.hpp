@@ -8,7 +8,7 @@
 namespace SageParser
 {
     /**
-     * @brief Interface for classes that write data to various formats like CSV, JSON, XML, and XLSX.
+     * @brief Interface for tabular file writers.
      */
     class IWriter
     {
@@ -20,7 +20,7 @@ namespace SageParser
          * @brief Writes data to the file from the provided Table representation.
          * @exception std::runtime_error if can't find or open file for writing
          */
-        virtual void write(const std::shared_ptr<Table> &Table) = 0;
+        virtual void write(const std::shared_ptr<Table> &table) = 0;
 
     protected:
         std::filesystem::path filePath_;

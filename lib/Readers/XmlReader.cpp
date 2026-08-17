@@ -1,53 +1,74 @@
-#include <filesystem>
-#include <stdexcept>
-#include <iostream>
 #include "XmlReader.hpp"
+
+#include <filesystem>
+#include <map>
+#include <stdexcept>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+#include "pugixml.hpp"
 
 namespace SageParser
 {
-
     std::shared_ptr<Table> XmlReader::read()
     {
-        pugi::xml_document doc;
-        pugi::xml_parse_result result = doc.load_file(filePath_.c_str());
+        if (filePath_.empty())
+            throw std::runtime_error("File path is empty");
+        if (!std::filesystem::exists(filePath_)
+            || !std::filesystem::is_regular_file(filePath_))
+            throw std::runtime_error("Invalid XML file path: " + filePath_.string());
 
+        pugi::xml_document document;
+        const pugi::xml_parse_result result = document.load_file(filePath_.c_str());
         if (!result)
+            throw std::runtime_error("Failed to parse XML file " + filePath_.string()
+                                     + ": " + result.description());
+
+        const pugi::xml_node root = document.document_element();
+        if (!root)
+            throw std::runtime_error("XML document has no root element");
+
+        std::vector<pugi::xml_node> rows;
+        std::vector<std::string> columns;
+        std::unordered_set<std::string> knownColumns;
+
+        for (const pugi::xml_node row : root.children())
         {
-            std::cerr << "Error loading XML file: " << filePath_ << " - " << result.description() << std::endl;
-            throw std::runtime_error("Failed to load XML file.");
+            if (row.type() != pugi::node_element)
+                continue;
+            rows.push_back(row);
+            for (const pugi::xml_node cell : row.children())
+            {
+                if (cell.type() != pugi::node_element)
+                    continue;
+                const std::string name = cell.name();
+                if (knownColumns.insert(name).second)
+                    columns.push_back(name);
+            }
         }
 
+        if (rows.empty() || columns.empty())
+            throw std::runtime_error("XML document contains no tabular data");
+
         auto table = std::make_shared<Table>();
-        pugi::xml_node root = doc.document_element(); // Using document_element for clarity
+        for (const std::string &column : columns)
+            table->addColumn(column);
 
-        // Using structured bindings (C++17 feature also useful in C++20 contexts)
-        bool columnsInitialized = false;
-        for (auto &rowNode : root.children())
+        for (const pugi::xml_node row : rows)
         {
-            if (!columnsInitialized)
-            {
-                for (auto &columnNode : rowNode.children())
-                {
-                    table->addColumn(columnNode.name());
-                }
-                columnsInitialized = true;
-            }
-
             std::map<std::string, std::string> rowData;
-            for (auto &columnNode : rowNode.children())
+            for (const pugi::xml_node cell : row.children())
             {
-                rowData[columnNode.name()] = columnNode.text().as_string();
+                if (cell.type() != pugi::node_element)
+                    continue;
+                const std::string name = cell.name();
+                if (!rowData.emplace(name, cell.text().as_string()).second)
+                    throw std::runtime_error("Duplicate XML field in one row: " + name);
             }
             table->addRow(rowData);
         }
 
-        if (!columnsInitialized)
-        {
-            std::cerr << "No data found in XML." << std::endl;
-            throw std::runtime_error("Empty XML structure.");
-        }
-
         return table;
     }
-
 } // namespace SageParser

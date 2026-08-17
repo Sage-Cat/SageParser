@@ -17,32 +17,34 @@ namespace SageParser {
             throw std::runtime_error("Invalid file path provided.");
         }
 
-        rapidcsv::Document doc(filePath_.string(), rapidcsv::LabelParams(0, -1), rapidcsv::SeparatorParams(m_delimiter));
-
-        auto table = std::make_shared<Table>();
-
-        // Get column names and add them to the table
-        std::vector<std::string> columnNames = doc.GetColumnNames();
-        for (const auto &columnName : columnNames)
+        try
         {
-            table->addColumn(columnName);
-        }
+            rapidcsv::Document doc(
+                filePath_.string(), rapidcsv::LabelParams(0, -1),
+                rapidcsv::SeparatorParams(m_delimiter, false,
+                                          rapidcsv::sPlatformHasCR, true));
 
-        size_t rowCount = doc.GetRowCount();
-
-        // Fill table with rows
-        for (size_t rowIdx = 0; rowIdx < rowCount; ++rowIdx)
-        {
-            std::map<std::string, std::string> rowData;
+            auto table = std::make_shared<Table>();
+            const std::vector<std::string> columnNames = doc.GetColumnNames();
             for (const auto &columnName : columnNames)
-            {
-                std::string cellValue = doc.GetCell<std::string>(columnName, rowIdx);
-                rowData[columnName] = cellValue;
-            }
-            table->addRow(rowData);
-        }
+                table->addColumn(columnName);
 
-        return table;
+            const std::size_t rowCount = doc.GetRowCount();
+            for (std::size_t rowIndex = 0; rowIndex < rowCount; ++rowIndex)
+            {
+                std::map<std::string, std::string> rowData;
+                for (const auto &columnName : columnNames)
+                    rowData[columnName] = doc.GetCell<std::string>(columnName, rowIndex);
+                table->addRow(rowData);
+            }
+
+            return table;
+        }
+        catch (const std::exception &error)
+        {
+            throw std::runtime_error("Failed to read CSV file " + filePath_.string()
+                                     + ": " + error.what());
+        }
     }
 
 } // namespace SageParser

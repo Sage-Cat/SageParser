@@ -27,7 +27,6 @@ namespace SageParser
     {
         NONE = 0,
         CSV,
-        XLSX,
         XML
     };
 
@@ -35,7 +34,6 @@ namespace SageParser
     {
         NONE = 0,
         CSV,
-        XLSX,
         XML
     };
 }

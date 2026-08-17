@@ -4,6 +4,9 @@ set(UNIT_TESTS_SOURCES
     ${UNIT_TESTS_DIR}/XmlReaderTest.cpp
     ${UNIT_TESTS_DIR}/XmlWriterTest.cpp
     ${UNIT_TESTS_DIR}/DefaultTableProcessorTest.cpp
+    ${UNIT_TESTS_DIR}/TableTest.cpp
+    ${UNIT_TESTS_DIR}/DataIntegrityTest.cpp
+    ${UNIT_TESTS_DIR}/ParserBuilderTest.cpp
 )
 
 foreach(test_source ${UNIT_TESTS_SOURCES})
@@ -12,6 +15,7 @@ foreach(test_source ${UNIT_TESTS_SOURCES})
     add_executable(${test_name} ${test_source})
     target_include_directories(${test_name} PUBLIC ${LIB_SOURCES_DIR} ${UTILS_DIR})
     target_link_libraries(${test_name} SageParserLib pugixml::pugixml GTest::GTest GTest::Main)
+    target_compile_options(${test_name} PRIVATE -Wall -Wextra -Wpedantic)
     
     add_test(NAME UNIT_${test_name} COMMAND ${test_name})
 endforeach()

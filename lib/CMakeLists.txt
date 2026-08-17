@@ -25,3 +25,5 @@ add_library(SageParserLib ${LIB_SOURCES})
 target_include_directories(SageParserLib PUBLIC ${LIB_SOURCES_DIR})
 
 target_link_libraries(SageParserLib PRIVATE rapidcsv::rapidcsv pugixml::pugixml)
+
+target_compile_options(SageParserLib PRIVATE -Wall -Wextra -Wpedantic)

@@ -1,9 +1,10 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include <cstddef>
 #include <map>
 #include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace SageParser
 {
@@ -15,6 +16,8 @@ namespace SageParser
 
         std::string &at(int row, int column);
         std::string &at(int row, const std::string &columnName);
+        const std::string &at(int row, int column) const;
+        const std::string &at(int row, const std::string &columnName) const;
 
         void addRow(const std::map<std::string, std::string> &rowData);
         void addRow(const std::map<int, std::string> &rowData);
@@ -24,15 +27,15 @@ namespace SageParser
         void renameColumn(int columnIndex, const std::string &newName);
         void eraseColumn(int columnIndex);
 
-        void reserve(size_t rows, size_t columns);
+        void reserve(std::size_t rows, std::size_t columns);
 
-        [[nodiscard]] size_t rowCount() const;
-        [[nodiscard]] size_t columnCount() const;
+        [[nodiscard]] std::size_t rowCount() const;
+        [[nodiscard]] std::size_t columnCount() const;
         [[nodiscard]] int getColumnIndex(const std::string &columnName) const;
 
     private:
-        void ensureColumnExists(int columnIndex);
-        void ensureRowExists(int rowIndex);
+        void ensureColumnExists(int columnIndex) const;
+        void ensureRowExists(int rowIndex) const;
         void updateColumnMappings(const std::string &columnName);
 
     private:

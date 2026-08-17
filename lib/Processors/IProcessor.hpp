@@ -18,6 +18,6 @@ namespace SageParser
         /**
          * @brief Medhod to perform processing
          */
-        virtual std::shared_ptr<Table> process(const std::shared_ptr<Table> &Table) = 0;
+        virtual std::shared_ptr<Table> process(const std::shared_ptr<Table> &table) = 0;
     };
 }
